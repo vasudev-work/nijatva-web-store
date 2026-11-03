@@ -125,6 +125,11 @@
   .add.copy:hover{color:var(--txt);border-color:var(--accent)}
   .ico img{width:22px;height:22px;display:block;filter:brightness(0) invert(1)}
   .add.on:hover{background:rgba(220,53,69,.18);color:#ff9a9a;border-color:rgba(255,154,154,.35)}
+  .hintbar{position:fixed;left:12px;right:12px;bottom:14px;z-index:60;display:none;
+    background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:12px;
+    padding:12px 14px;font-size:13.5px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+  .hintbar.on{display:block}
+  .hintbar a{color:var(--accent);font-weight:600;text-decoration:none}
 </style></head>
 <body>
 
@@ -255,9 +260,17 @@
   document.addEventListener('click', function (ev) {
     var rm = ev.target.closest ? ev.target.closest('[data-remove]') : null;
     if (rm) {
-      delete installed[rm.getAttribute('data-remove')];
-      try { localStorage.setItem('nijatva.installed', JSON.stringify(installed)); } catch (e) { }
-      setTimeout(render, 400);
+      ev.preventDefault();
+      handOff(rm.getAttribute('data-url'), rm.getAttribute('data-remove'), false,
+              'Nothing opened - is the Nijatva app installed on this device?');
+      return;
+    }
+    var ins = ev.target.closest ? ev.target.closest('[data-install]') : null;
+    if (ins) {
+      ev.preventDefault();
+      handOff(ins.getAttribute('data-url'), ins.getAttribute('data-install'), true,
+              'Nothing opened - is the Nijatva app installed on this device?');
+      return;
     }
     var el = ev.target.closest ? ev.target.closest('[data-copy]') : null;
     if (!el) return;
@@ -275,6 +288,51 @@
     if (/^https?:/i.test(p)) return p;
     var b = BASE.charAt(BASE.length - 1) === '/' ? BASE : BASE + '/';
     return b + p.replace(/^\.?\//, '');
+  }
+
+
+  /* ------------------------------------------------------------------
+     Install and remove from the page.
+
+     A website cannot install anything by itself - it can only hand the
+     address to the app. So: remember the choice, navigate to the scheme,
+     and if nothing picks it up within a moment, say so plainly instead of
+     leaving the user staring at a button that did nothing.
+     ------------------------------------------------------------------ */
+  var APK = 'https://github.com/vasudev-work/nijatva-browser/releases/latest/download/Nijatva-debug.apk';
+
+  function remember(id, on) {
+    if (on) installed[id] = 1; else delete installed[id];
+    try { localStorage.setItem('nijatva.installed', JSON.stringify(installed)); } catch (e) { }
+    refreshIns();
+  }
+
+  function hint(msg, withApk) {
+    var b = document.getElementById('hintbar');
+    if (!b) {
+      b = document.createElement('div');
+      b.id = 'hintbar';
+      b.className = 'hintbar';
+      document.body.appendChild(b);
+    }
+    b.innerHTML = esc(msg) + (withApk
+      ? ' <a href="' + APK + '" target="_blank" rel="noopener">Get the app</a>' : '');
+    b.classList.add('on');
+    clearTimeout(hint._t);
+    hint._t = setTimeout(function () { b.classList.remove('on'); }, 5200);
+  }
+
+  function handOff(url, id, on, msg) {
+    remember(id, on);
+    var left = false;
+    function away() { left = true; }
+    document.addEventListener('visibilitychange', away, { once: true });
+    window.addEventListener('blur', away, { once: true });
+    try { location.href = url; } catch (e) { }
+    setTimeout(function () {
+      if (!left) hint(msg, true);
+      render();
+    }, 1400);
   }
 
   function esc(s) {
@@ -298,10 +356,12 @@
         '&n=' + encodeURIComponent(nm) + '&p=' + encodeURIComponent(e.pattern || '*') +
         '&i=' + encodeURIComponent(e.id || '') +
         '&h=' + encodeURIComponent(e.sha256 || '');
+    var rmLink = 'nijatva://remove?id=' + encodeURIComponent(e.id || '');
     var btn = isOn
-      ? '<a class="add on" href="' + esc('nijatva://remove?id=' + encodeURIComponent(e.id || '')) +
-        '" data-remove="' + esc(e.id || '') + '">Installed</a>'
-      : '<a class="add" href="' + esc(link) + '">+ Add</a>' +
+      ? '<a class="add on" href="' + esc(rmLink) + '" data-remove="' + esc(e.id || '') +
+        '" data-url="' + esc(rmLink) + '">Installed</a>'
+      : '<a class="add" href="' + esc(link) + '" data-install="' + esc(e.id || '') +
+        '" data-url="' + esc(link) + '">+ Add</a>' +
         '<a class="add copy" data-copy="' + esc(link) + '" href="#" title="Copy the install link">Copy</a>';
     return '<div class="card" data-id="' + esc(e.id || '') + '" style="animation-delay:' + Math.min(i * 30, 210) + 'ms">' +
       '<div class="c-top">' +
