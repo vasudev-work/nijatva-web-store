@@ -145,6 +145,16 @@
            stroke-linecap="round"><circle cx="11" cy="11" r="6.6"/><path d="M16.2 16.2 20.5 20.5"/></svg>
       <input id="q" placeholder="Search" autocomplete="off">
     </label>
+    <button class="round" id="refresh" aria-label="Check for updates" title="Check for updates"
+            onclick="refreshIndex()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+           stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>
+    </button>
+    <button class="round" id="export" aria-label="Export the installed list" title="Export the installed list"
+            onclick="exportInstalled()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+           stroke-linecap="round"><path d="M12 4v10"/><path d="M8.5 10.5 12 14l3.5-3.5"/><path d="M5 19h14"/></svg>
+    </button>
     <button class="round" id="theme" aria-label="Theme"><span id="theme-ico"></span></button>
     <button class="pill" id="local">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -335,6 +345,45 @@
     }, 1400);
   }
 
+
+  /* how big the script is - a script that costs 40 KB is a different promise
+     from one that costs 600 bytes */
+  function kb(n) {
+    if (!n) return '';
+    if (n < 1024) return n + ' B';
+    return (n / 1024).toFixed(n < 10240 ? 1 : 0) + ' KB';
+  }
+
+  /* fetch the catalogue again, past any cache, and say what changed */
+  function refreshIndex() {
+    var before = all.length;
+    var x = new XMLHttpRequest();
+    x.open('GET', BASE + 'index.json?t=' + Date.now(), true);
+    x.onload = function () {
+      try {
+        var d = JSON.parse(x.responseText);
+        var list = d.extensions || d;
+        if (!list.length) throw 0;
+        all = list;
+        render(); renderCats();
+        hint(before === all.length ? 'Up to date - ' + all.length + ' extensions' : 'Updated - ' + all.length + ' extensions', false);
+      } catch (e) { hint('Could not reach the catalogue', false); }
+    };
+    x.onerror = function () { hint('Could not reach the catalogue', false); };
+    x.send();
+  }
+
+  /* the installed list, as a file - so it survives a cleared browser */
+  function exportInstalled() {
+    var ids = Object.keys(installed).filter(function (k) { return installed[k]; });
+    var data = JSON.stringify({ exported: new Date().toISOString(), installed: ids }, null, 2);
+    var a = document.createElement('a');
+    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(data);
+    a.download = 'nijatva-installed.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    hint(ids.length + ' installed scripts exported', false);
+  }
+
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -371,7 +420,8 @@
         '<div style="flex:1;min-width:0">' +
           '<div class="c-name">' + esc(nm) + '</div>' +
           '<div class="c-meta"><span>' + (e.fromApp ? 'built in' : 'v' + esc(e.version || '1.0')) + '</span><span>·</span>' +
-          '<span>' + esc(e.pattern || '*') + '</span></div>' +
+          '<span>' + esc(e.pattern || '*') + '</span>' +
+          (e.size ? '<span>·</span><span>' + kb(e.size) + '</span>' : '') + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="c-desc">' + esc(e.desc || '') + '</div>' +
@@ -522,6 +572,7 @@
       '<div class="kv"><span>Runs on</span><span>' + esc(e.pattern || '*') + '</span></div>' +
       '<div class="kv"><span>Type</span><span>Userscript, injected into the page</span></div>' +
       '<div class="kv"><span>Needs</span><span>Nothing outside the page</span></div>' +
+      (e.size ? '<div class="kv"><span>Size</span><span>' + kb(e.size) + '</span></div>' : '') +
       '<div class="kv"><span>Source</span><span>' + esc(e.fromApp ? 'ships with the app' : (e.file || '')) + '</span></div>' +
       '<div class="s-actions">' + action + '</div>';
     document.getElementById('sheet').classList.add('on');
