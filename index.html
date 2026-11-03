@@ -123,6 +123,7 @@
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
   .add.copy{background:transparent;color:var(--dim);border:1px solid var(--line);margin-left:8px}
   .add.copy:hover{color:var(--txt);border-color:var(--accent)}
+  .ico img{width:22px;height:22px;display:block;filter:brightness(0) invert(1)}
 </style></head>
 <body>
 
@@ -278,7 +279,9 @@
         '<a class="add copy" data-copy="' + esc(link) + '" href="#" title="Copy the install link">Copy</a>';
     return '<div class="card" data-id="' + esc(e.id || '') + '" style="animation-delay:' + Math.min(i * 30, 210) + 'ms">' +
       '<div class="c-top">' +
-        '<div class="ico" style="background:' + colour(nm) + '">' + esc(nm.charAt(0).toUpperCase()) + '</div>' +
+        '<div class="ico" style="background:' + colour(nm) + '">' +
+        (e.icon ? '<img src="' + esc(e.icon) + '" alt="" loading="lazy">' : esc(nm.charAt(0).toUpperCase())) +
+      '</div>' +
         '<div style="flex:1;min-width:0">' +
           '<div class="c-name">' + esc(nm) + '</div>' +
           '<div class="c-meta"><span>' + (e.fromApp ? 'built in' : 'v' + esc(e.version || '1.0')) + '</span><span>·</span>' +
