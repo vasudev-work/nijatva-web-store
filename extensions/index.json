@@ -11,7 +11,8 @@
       "version": "1.0",
       "sha256": "99a4a906d64b4aa8fb14f6692ff428efc1ad948f63e418e35aef0ed5e42a5f0d",
       "category": "Everywhere",
-      "icon": "icons/back-to-top.svg"
+      "icon": "icons/back-to-top.svg",
+      "size": 2682
     },
     {
       "id": "block-youtube-redirect",
@@ -22,7 +23,8 @@
       "version": "1.0",
       "category": "Take control of tabs",
       "sha256": "808cbac9ff5cc35eebed4e75907f1f7511fb66c9e71f7227e532ceec624009d7",
-      "icon": "icons/block-youtube-redirect.svg"
+      "icon": "icons/block-youtube-redirect.svg",
+      "size": 8239
     },
     {
       "id": "builtin-bgplay",
@@ -33,7 +35,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "07fc666954b44df7b8d74876c5fae34f9d2e3becc99c12bb02276ebab91cc9dd",
-      "icon": "icons/builtin-bgplay.svg"
+      "icon": "icons/builtin-bgplay.svg",
+      "size": 619
     },
     {
       "id": "builtin-cookie",
@@ -44,7 +47,8 @@
       "version": "1.0",
       "category": "Privacy",
       "sha256": "ef613fc0baeee2c06f97cf91c50b0fde27636733d3e5fc1a267fb0f9348c695a",
-      "icon": "icons/builtin-cookie.svg"
+      "icon": "icons/builtin-cookie.svg",
+      "size": 676
     },
     {
       "id": "builtin-dark",
@@ -55,7 +59,8 @@
       "version": "1.0",
       "category": "Accessibility",
       "sha256": "98046930f79358030ecae0539fb76c10d6cf2590c57164df766d416fe79d0980",
-      "icon": "icons/builtin-dark.svg"
+      "icon": "icons/builtin-dark.svg",
+      "size": 276
     },
     {
       "id": "builtin-font",
@@ -66,7 +71,8 @@
       "version": "1.0",
       "category": "Accessibility",
       "sha256": "7ca401d8feac17edb61abf79b39525dd25c45bf0ed4f8dabdef4c526019507a6",
-      "icon": "icons/builtin-font.svg"
+      "icon": "icons/builtin-font.svg",
+      "size": 52
     },
     {
       "id": "builtin-json",
@@ -77,7 +83,8 @@
       "version": "1.0",
       "category": "Developer Tools",
       "sha256": "174911cefa744716cdb0dac88d57eb4d1213df58ed8fea5f012d9c2a5cac1951",
-      "icon": "icons/builtin-json.svg"
+      "icon": "icons/builtin-json.svg",
+      "size": 631
     },
     {
       "id": "builtin-media",
@@ -88,7 +95,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "5e0f86d84eadc6892c489aac698f35cebb34f10734fc70d4c929f3e040d7a32a",
-      "icon": "icons/builtin-media.svg"
+      "icon": "icons/builtin-media.svg",
+      "size": 643
     },
     {
       "id": "builtin-ryd",
@@ -99,7 +107,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "6e0711abdb5bf05213f1a1ba33950f93e2a31c1c020e5c66cab68d6c86d9f718",
-      "icon": "icons/builtin-ryd.svg"
+      "icon": "icons/builtin-ryd.svg",
+      "size": 935
     },
     {
       "id": "builtin-target",
@@ -110,7 +119,8 @@
       "version": "1.0",
       "category": "Take control of tabs",
       "sha256": "c708ba6761700ccf73d6a8979aa3f9a66f3008a32f7203c08994e8386749fc8a",
-      "icon": "icons/builtin-target.svg"
+      "icon": "icons/builtin-target.svg",
+      "size": 113
     },
     {
       "id": "cat-gray",
@@ -121,7 +131,8 @@
       "version": "1.0",
       "category": "Accessibility",
       "sha256": "b0c3371bde3a4419ab6331bfc36bdc5f93fc2731e7713495655dd19d755d1e0e",
-      "icon": "icons/cat-gray.svg"
+      "icon": "icons/cat-gray.svg",
+      "size": 145
     },
     {
       "id": "cat-read",
@@ -132,7 +143,8 @@
       "version": "1.0",
       "category": "Accessibility",
       "sha256": "8017ce8da594041f59df9c639baff5e236406ce458cb9c9cb1c9e288adb171bb",
-      "icon": "icons/cat-read.svg"
+      "icon": "icons/cat-read.svg",
+      "size": 179
     },
     {
       "id": "cat-sticky",
@@ -143,7 +155,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "64ab0e11b67471a653b9910939d29a176ef9e22975b8975bd33731ec337bab13",
-      "icon": "icons/cat-sticky.svg"
+      "icon": "icons/cat-sticky.svg",
+      "size": 144
     },
     {
       "id": "cat-wiki",
@@ -154,7 +167,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "1ca2590387a102b90f44202a8cd741bdcb5bb8d49ddc403e19f2ba3a9d895c4c",
-      "icon": "icons/cat-wiki.svg"
+      "icon": "icons/cat-wiki.svg",
+      "size": 184
     },
     {
       "id": "cat-ytad",
@@ -165,7 +179,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "83de4934a2f02b887d50b81f9be440b80b8d382545f5537f10b6ffc4457cf4a9",
-      "icon": "icons/cat-ytad.svg"
+      "icon": "icons/cat-ytad.svg",
+      "size": 647
     },
     {
       "id": "chrome-mask",
@@ -176,7 +191,8 @@
       "version": "1.1",
       "category": "Privacy",
       "sha256": "bd70abf0be3abe884ae1e471ddb223441bc66f5549861bc667ab95797fd50738",
-      "icon": "icons/chrome-mask.svg"
+      "icon": "icons/chrome-mask.svg",
+      "size": 2756
     },
     {
       "id": "cosmetic-cleanup",
@@ -187,7 +203,8 @@
       "version": "1.0",
       "category": "Privacy",
       "sha256": "c8ca51c59d2075a67eb69d429010a9c3b6424af593fbeda74d79b7be370376d6",
-      "icon": "icons/cosmetic-cleanup.svg"
+      "icon": "icons/cosmetic-cleanup.svg",
+      "size": 2247
     },
     {
       "id": "dark-scrollbars",
@@ -198,7 +215,8 @@
       "version": "1.0",
       "category": "Accessibility",
       "sha256": "354f1267d465a812067c1fbd62c8a8d66369eaa50915076160fdcecfd6573730",
-      "icon": "icons/dark-scrollbars.svg"
+      "icon": "icons/dark-scrollbars.svg",
+      "size": 507
     },
     {
       "id": "gh-diff-wide",
@@ -209,7 +227,8 @@
       "version": "1.0",
       "sha256": "d02fc7dc9d43cdd405ae8fa193246c11a1f3ae205b38d4641d657a063de03fbd",
       "category": "Developer",
-      "icon": "icons/gh-diff-wide.svg"
+      "icon": "icons/gh-diff-wide.svg",
+      "size": 1737
     },
     {
       "id": "hide-consent",
@@ -220,7 +239,8 @@
       "version": "1.0",
       "category": "Privacy",
       "sha256": "590638c36aa85488a2f4ce1f6bc79e366a0e57247435120120d4e8b0881f34fa",
-      "icon": "icons/hide-consent.svg"
+      "icon": "icons/hide-consent.svg",
+      "size": 1124
     },
     {
       "id": "hide-shorts",
@@ -231,7 +251,8 @@
       "version": "1.1",
       "category": "Productivity",
       "sha256": "8be25d594331c0c04cdc374e66e501ffdbff52b14565e5c8d0a6d36c68a720e7",
-      "icon": "icons/hide-shorts.svg"
+      "icon": "icons/hide-shorts.svg",
+      "size": 2362
     },
     {
       "id": "hn-comfort",
@@ -242,7 +263,8 @@
       "version": "1.0",
       "sha256": "d96e881d23e16c4fe1499008285511d4e6099933b7455c64022a81d020de652b",
       "category": "Reading",
-      "icon": "icons/hn-comfort.svg"
+      "icon": "icons/hn-comfort.svg",
+      "size": 1939
     },
     {
       "id": "no-miniplayer",
@@ -253,7 +275,8 @@
       "version": "1.0",
       "category": "Take control of tabs",
       "sha256": "8340bbdc43cb691dba6cc4dcf5a6e3d000e57c4d56159df35341a7e5f9a25747",
-      "icon": "icons/no-miniplayer.svg"
+      "icon": "icons/no-miniplayer.svg",
+      "size": 689
     },
     {
       "id": "reader-width",
@@ -264,7 +287,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "d048036ac8483f0f9870362f5a63ec8c95a900d4bc2e76e164e0735b82da3531",
-      "icon": "icons/reader-width.svg"
+      "icon": "icons/reader-width.svg",
+      "size": 1133
     },
     {
       "id": "so-wide",
@@ -275,7 +299,8 @@
       "version": "1.0",
       "sha256": "941f15f5ae31f16318f2d5aa1a80e26ec1ea419f4e764e71025f654238c09d2b",
       "category": "Developer",
-      "icon": "icons/so-wide.svg"
+      "icon": "icons/so-wide.svg",
+      "size": 1888
     },
     {
       "id": "stop-autoplay",
@@ -286,7 +311,8 @@
       "version": "1.0",
       "category": "Productivity",
       "sha256": "39ff814bd465ad390cd4872dd8c8f22918748a6b2f23d1907b08c364cd34e218",
-      "icon": "icons/stop-autoplay.svg"
+      "icon": "icons/stop-autoplay.svg",
+      "size": 1199
     },
     {
       "id": "wide-github",
@@ -297,7 +323,8 @@
       "version": "1.0",
       "category": "Developer Tools",
       "sha256": "c18c83a70fca531a8919ff6a3e2e9714b1a5c18db71579fbea66a5a613b86401",
-      "icon": "icons/wide-github.svg"
+      "icon": "icons/wide-github.svg",
+      "size": 469
     },
     {
       "id": "wiki-comfort",
@@ -308,7 +335,8 @@
       "version": "1.0",
       "sha256": "65ccab45c030d7592ebb0bdcaa6bcddda4d8564c716482590276adbbf433ab16",
       "category": "Reading",
-      "icon": "icons/wiki-comfort.svg"
+      "icon": "icons/wiki-comfort.svg",
+      "size": 1739
     },
     {
       "id": "yt-shorts-off",
@@ -319,7 +347,8 @@
       "version": "1.0",
       "sha256": "53d5a692aeb222b951473781bcb85ab1d45d42a580c6e866252f5e1e17347f9e",
       "category": "Youtube",
-      "icon": "icons/yt-shorts-off.svg"
+      "icon": "icons/yt-shorts-off.svg",
+      "size": 2117
     }
   ]
 }
