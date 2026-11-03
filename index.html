@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nijatva Web Store</title>
+<meta name="description" content="Scripts for the Nijatva and Aekant browsers. One tap to install.">
+<meta name="theme-color" content="#0b1220">
+<style>
+  :root{
+    --bg:#0b1220; --card:#141d2e; --line:#22304a; --txt:#e8eefc; --dim:#93a3bf;
+    --accent:#2a9cf0; --accent-ink:#04121f; --good:#90ea48; --radius:16px;
+  }
+  @media (prefers-color-scheme: light){
+    :root{--bg:#f4f7fc; --card:#ffffff; --line:#dde5f2; --txt:#111a2b; --dim:#5b6b85; --accent:#1476c6; --accent-ink:#ffffff;}
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--txt); min-height:100vh;
+    font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+  a{color:var(--accent);text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 16px 64px}
+
+  header{padding:28px 0 18px;border-bottom:1px solid var(--line);margin-bottom:20px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{
+    width:42px;height:42px;border-radius:12px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--accent),#1ee4f6 55%,var(--good));
+    display:grid;place-items:center;color:#04121f;font-weight:800;font-size:19px;
+  }
+  h1{font-size:21px;margin:0;letter-spacing:-.01em}
+  .sub{color:var(--dim);font-size:13px;margin:2px 0 0}
+
+  .notice{
+    display:none;margin:16px 0 0;padding:12px 14px;border-radius:12px;
+    background:color-mix(in srgb,var(--accent) 12%,transparent);
+    border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
+    font-size:13px;color:var(--txt);
+  }
+  .notice.on{display:block}
+  .notice b{color:var(--accent)}
+
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:20px 0 6px}
+  input[type=search]{
+    flex:1 1 220px;min-width:0;padding:11px 14px;border-radius:12px;
+    border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:15px;
+    outline:none;
+  }
+  input[type=search]:focus{border-color:var(--accent)}
+  .count{color:var(--dim);font-size:13px;white-space:nowrap}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 22px}
+  .chip{
+    padding:6px 13px;border-radius:999px;border:1px solid var(--line);
+    background:transparent;color:var(--dim);font-size:13px;cursor:pointer;
+    font-family:inherit;
+  }
+  .chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;display:flex;flex-direction:column;gap:10px;
+  }
+  .card h2{font-size:15.5px;margin:0;letter-spacing:-.01em}
+  .card p{margin:0;color:var(--dim);font-size:13.5px}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;color:var(--dim)}
+  .tag{border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+  .pat{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;opacity:.85}
+  .row{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+  button{font-family:inherit;font-size:14px;cursor:pointer;border-radius:11px;padding:10px 14px;border:1px solid var(--line)}
+  .install{flex:1;background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:650}
+  .install.done{background:transparent;color:var(--good);border-color:var(--good)}
+  .copy{background:transparent;color:var(--dim)}
+
+  .state{color:var(--dim);padding:40px 0;text-align:center;font-size:14px}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:color-mix(in srgb,var(--txt) 8%,transparent);padding:1px 5px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="mark">N</div>
+      <div>
+        <h1>Nijatva Web Store</h1>
+        <p class="sub">Scripts for Nijatva and Aekant &middot; install with one tap</p>
+      </div>
+    </div>
+    <div class="notice" id="notice"></div>
+  </header>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="Search scripts" autocomplete="off" spellcheck="false">
+    <span class="count" id="count"></span>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"><div class="state">Loading the list…</div></div>
+
+  <footer>
+    <p><b>Adding a script.</b> Drop a <code>.js</code> file in <code>extensions/</code> with a
+    <code>// @name</code>, <code>// @description</code>, <code>// @match</code> and
+    <code>// @tag</code> header, then run <code>python3 tools/build_index.py</code>. Push, and it
+    appears here.</p>
+    <p>Scripts are plain userscripts — the only extension format these browsers run. There is no
+    <code>chrome.*</code> API here, so Chrome extensions will not work, whatever the store says.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var RAW = 'https://raw.githubusercontent.com/vasudev-work/nijatva-web-store/main/extensions/';
+  var INDEX = 'extensions/index.json';
+
+  var el = {
+    grid: document.getElementById('grid'),
+    chips: document.getElementById('chips'),
+    q: document.getElementById('q'),
+    count: document.getElementById('count'),
+    notice: document.getElementById('notice')
+  };
+
+  var all = [], tag = '', query = '';
+
+  // Inside the browser we can hand the install straight to the app; anywhere
+  // else a nijatva:// link goes nowhere, so say so once and offer the URL.
+  var inApp = /Nijatva|Aekant|;\s*wv\)/i.test(navigator.userAgent);
+  if (!inApp) {
+    el.notice.className = 'notice on';
+    el.notice.innerHTML = 'You are reading this outside <b>Nijatva</b>. Open this page in the ' +
+      'Nijatva or Aekant browser to install with one tap — or use <b>Copy link</b> and paste the ' +
+      'address into Extensions &rarr; Install from a link.';
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function installUrl(e) {
+    var u = 'nijatva://install?u=' + encodeURIComponent(RAW + e.file) +
+            '&n=' + encodeURIComponent(e.name || e.file) +
+            '&p=' + encodeURIComponent(e.pattern || '*');
+    if (e.sha256) u += '&h=' + encodeURIComponent(e.sha256);
+    return u;
+  }
+
+  function copy(text, btn) {
+    var done = function () {
+      var t = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = t; }, 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+    } else fallback();
+
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) { }
+      document.body.removeChild(ta);
+    }
+  }
+
+  function card(e) {
+    var d = document.createElement('div');
+    d.className = 'card';
+    var tags = (e.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
+    d.innerHTML =
+      '<h2>' + esc(e.name || e.id) + '</h2>' +
+      '<p>' + esc(e.desc || '') + '</p>' +
+      '<div class="meta">' + tags +
+        '<span class="pat">' + esc(e.pattern || '*') + '</span>' +
+        '<span>v' + esc(e.version || '1.0') + '</span>' +
+      '</div>' +
+      '<div class="row">' +
+        '<button class="install" type="button">Install</button>' +
+        '<button class="copy" type="button">Copy link</button>' +
+      '</div>';
+
+    var ib = d.querySelector('.install');
+    ib.addEventListener('click', function () {
+      var was = ib.textContent;
+      ib.textContent = 'Installing…';
+      try { window.location.href = installUrl(e); } catch (err) { }
+      setTimeout(function () {
+        ib.textContent = was;
+        if (!inApp) copy(RAW + e.file, ib);
+      }, 900);
+    });
+    d.querySelector('.copy').addEventListener('click', function () {
+      copy(RAW + e.file, this);
+    });
+    return d;
+  }
+
+  function render() {
+    var list = all.filter(function (e) {
+      if (tag && (e.tags || []).indexOf(tag) < 0) return false;
+      if (!query) return true;
+      var hay = ((e.name || '') + ' ' + (e.desc || '') + ' ' + (e.pattern || '') + ' ' +
+                 (e.tags || []).join(' ')).toLowerCase();
+      return hay.indexOf(query) >= 0;
+    });
+    el.count.textContent = list.length + (list.length === 1 ? ' script' : ' scripts');
+    el.grid.innerHTML = '';
+    if (!list.length) {
+      el.grid.innerHTML = '<div class="state">Nothing matches that.</div>';
+      return;
+    }
+    list.forEach(function (e) { el.grid.appendChild(card(e)); });
+  }
+
+  function chips() {
+    var seen = {}, tags = [];
+    all.forEach(function (e) {
+      (e.tags || []).forEach(function (t) {
+        if (!seen[t]) { seen[t] = 1; tags.push(t); }
+      });
+    });
+    tags.sort();
+    el.chips.innerHTML = '';
+    if (tags.length < 2) return;
+    [{ label: 'All', value: '' }].concat(tags.map(function (t) { return { label: t, value: t }; }))
+      .forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'chip' + (c.value === tag ? ' on' : '');
+        b.textContent = c.label;
+        b.addEventListener('click', function () {
+          tag = c.value;
+          [].forEach.call(el.chips.children, function (x) { x.className = 'chip'; });
+          b.className = 'chip on';
+          render();
+        });
+        el.chips.appendChild(b);
+      });
+  }
+
+  el.q.addEventListener('input', function () {
+    query = this.value.trim().toLowerCase();
+    render();
+  });
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', INDEX + '?t=' + Date.now(), true);
+  xhr.onload = function () {
+    var data;
+    try { data = JSON.parse(xhr.responseText); } catch (e) { data = null; }
+    var list = data && (data.extensions || (Array.isArray(data) ? data : null));
+    if (!list) {
+      el.grid.innerHTML = '<div class="state">The list could not be read.</div>';
+      return;
+    }
+    all = list.filter(function (e) { return e && e.file; });
+    chips();
+    render();
+  };
+  xhr.onerror = function () {
+    el.grid.innerHTML = '<div class="state">Could not reach the list. Check your connection.</div>';
+  };
+  xhr.send();
+})();
+</script>
+</body>
+</html>

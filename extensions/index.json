@@ -1,0 +1,78 @@
+{
+  "extensions": [
+    {
+      "id": "back-to-top",
+      "name": "Back to top",
+      "desc": "A small button that jumps to the top once you have scrolled down.",
+      "pattern": "*",
+      "file": "back-to-top.js",
+      "version": "1.0",
+      "sha256": "99a4a906d64b4aa8fb14f6692ff428efc1ad948f63e418e35aef0ed5e42a5f0d",
+      "tags": [
+        "Everywhere",
+        "Reading"
+      ]
+    },
+    {
+      "id": "gh-diff-wide",
+      "name": "GitHub: wide diffs",
+      "desc": "Lets diffs, blame and code files use the full screen width.",
+      "pattern": "*github.com*",
+      "file": "gh-diff-wide.js",
+      "version": "1.0",
+      "sha256": "d02fc7dc9d43cdd405ae8fa193246c11a1f3ae205b38d4641d657a063de03fbd",
+      "tags": [
+        "Developer"
+      ]
+    },
+    {
+      "id": "hn-comfort",
+      "name": "Hacker News: readable",
+      "desc": "Bigger type, wider column and real spacing between comments.",
+      "pattern": "*news.ycombinator.com*",
+      "file": "hn-comfort.js",
+      "version": "1.0",
+      "sha256": "d96e881d23e16c4fe1499008285511d4e6099933b7455c64022a81d020de652b",
+      "tags": [
+        "Reading"
+      ]
+    },
+    {
+      "id": "so-wide",
+      "name": "Stack Overflow: wide answers",
+      "desc": "Gives the question and answers the full width; code scrolls sideways.",
+      "pattern": "*stackoverflow.com*,*stackexchange.com*,*superuser.com*,*serverfault.com*",
+      "file": "so-wide.js",
+      "version": "1.0",
+      "sha256": "941f15f5ae31f16318f2d5aa1a80e26ec1ea419f4e764e71025f654238c09d2b",
+      "tags": [
+        "Developer"
+      ]
+    },
+    {
+      "id": "wiki-comfort",
+      "name": "Wikipedia: comfortable reading",
+      "desc": "Roomier line height, and infoboxes that fit a phone screen.",
+      "pattern": "*wikipedia.org*",
+      "file": "wiki-comfort.js",
+      "version": "1.0",
+      "sha256": "65ccab45c030d7592ebb0bdcaa6bcddda4d8564c716482590276adbbf433ab16",
+      "tags": [
+        "Reading"
+      ]
+    },
+    {
+      "id": "yt-shorts-off",
+      "name": "YouTube: Shorts off",
+      "desc": "Removes the Shorts shelf and the Shorts tab from YouTube.",
+      "pattern": "*youtube.com*",
+      "file": "yt-shorts-off.js",
+      "version": "1.0",
+      "sha256": "53d5a692aeb222b951473781bcb85ab1d45d42a580c6e866252f5e1e17347f9e",
+      "tags": [
+        "YouTube",
+        "Focus"
+      ]
+    }
+  ]
+}
