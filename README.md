@@ -114,10 +114,23 @@ signed with the matching private key:
 python3 tools/sign.py /path/to/nijatva-store-signing-key.pem
 ```
 
-Re-run it after **every** change to `index.json`, or the app will say *"Store
-signature is not valid — the list was refused"*. The private key never goes in
-this repository. If you would rather not sign, use route 1 or 3 instead — the
-store page and *Install from a link* do not require a signature.
+`index.json.sig` is committed and signed with the store key, so this route
+works as it stands. But the signature covers the exact bytes of `index.json`,
+so **any** change to the catalogue invalidates it — and the app then says
+*"Store signature is not valid — the list was refused"*. After every rebuild:
+
+```sh
+python3 tools/build_index.py     # rewrite the catalogue
+python3 tools/sign.py /path/to/nijatva-store-signing-key.pem
+python3 tools/verify_sig.py      # confirms the pair still matches
+```
+
+`tools/verify_sig.py` holds only the public key. The private key never goes in
+this repository, and the Action fails the build if a rebuilt `index.json` no
+longer matches the committed signature — so a store that will not load cannot
+be published by accident. If you would rather not deal with signing at all, use
+route 1 or 3 instead: the store page and *Install from a link* do not require a
+signature.
 
 ### 3. Install from a link
 
