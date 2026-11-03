@@ -124,6 +124,7 @@
   .add.copy{background:transparent;color:var(--dim);border:1px solid var(--line);margin-left:8px}
   .add.copy:hover{color:var(--txt);border-color:var(--accent)}
   .ico img{width:22px;height:22px;display:block;filter:brightness(0) invert(1)}
+  .add.on:hover{background:rgba(220,53,69,.18);color:#ff9a9a;border-color:rgba(255,154,154,.35)}
 </style></head>
 <body>
 
@@ -150,6 +151,7 @@
     <button class="tab on" data-view="discover">Discover</button>
     <button class="tab" data-view="extensions">Extensions</button>
     <button class="tab" data-view="themes">Themes</button>
+    <button class="tab" data-view="installed">Installed <span id="insn">0</span></button>
   </div>
 </div>
 
@@ -242,7 +244,21 @@
       return true;
     } catch (e) { return false; }
   }
+  document.addEventListener('mouseover', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('[data-remove]') : null;
+    if (a && a.textContent === 'Installed') a.textContent = 'Remove';
+  });
+  document.addEventListener('mouseout', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('[data-remove]') : null;
+    if (a && a.textContent === 'Remove') a.textContent = 'Installed';
+  });
   document.addEventListener('click', function (ev) {
+    var rm = ev.target.closest ? ev.target.closest('[data-remove]') : null;
+    if (rm) {
+      delete installed[rm.getAttribute('data-remove')];
+      try { localStorage.setItem('nijatva.installed', JSON.stringify(installed)); } catch (e) { }
+      setTimeout(render, 400);
+    }
     var el = ev.target.closest ? ev.target.closest('[data-copy]') : null;
     if (!el) return;
     ev.preventDefault();
@@ -283,7 +299,8 @@
         '&i=' + encodeURIComponent(e.id || '') +
         '&h=' + encodeURIComponent(e.sha256 || '');
     var btn = isOn
-      ? '<span class="add on">Installed</span>'
+      ? '<a class="add on" href="' + esc('nijatva://remove?id=' + encodeURIComponent(e.id || '')) +
+        '" data-remove="' + esc(e.id || '') + '">Installed</a>'
       : '<a class="add" href="' + esc(link) + '">+ Add</a>' +
         '<a class="add copy" data-copy="' + esc(link) + '" href="#" title="Copy the install link">Copy</a>';
     return '<div class="card" data-id="' + esc(e.id || '') + '" style="animation-delay:' + Math.min(i * 30, 210) + 'ms">' +
@@ -314,7 +331,15 @@
     });
   }
 
+  function refreshIns() {
+    var n = 0;
+    for (var k in installed) if (installed[k]) n++;
+    var el = document.getElementById('insn');
+    if (el) el.textContent = n;
+  }
+
   function render() {
+    refreshIns();
     var term = q.value || '';
     if (view === 'themes') {
       var html = '<div class="head"><h3>All Themes</h3></div>' +
@@ -332,6 +357,16 @@
           '</div></div>';
       });
       viewEl.innerHTML = html;
+      return;
+    }
+
+    if (view === 'installed') {
+      var mine = all.filter(function (e) { return installed[e.id]; });
+      var h = '<div class="head"><h3>Installed</h3></div>' +
+        '<div class="count">' + mine.length + ' of ' + all.length + ' scripts are on this device</div>';
+      if (!mine.length) h += '<div class="state">Nothing installed yet - pick something from Discover.</div>';
+      else mine.forEach(function (e, i) { h += card(e, i); });
+      viewEl.innerHTML = h;
       return;
     }
 
