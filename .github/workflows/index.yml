@@ -17,8 +17,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install the signing library
+        run: pip install --quiet cryptography
       - name: Rebuild the catalogue from the script headers
         run: python3 tools/build_index.py
+      - name: Check the signature still matches
+        # A rebuilt index.json invalidates index.json.sig, and the app refuses
+        # a catalogue whose signature does not verify. Fail here, before the
+        # commit, rather than publishing a store that will not load.
+        run: python3 tools/verify_sig.py
       - name: Commit it if it changed
         run: |
           if git diff --quiet -- extensions/index.json; then
