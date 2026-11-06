@@ -12,7 +12,8 @@
       "sha256": "99a4a906d64b4aa8fb14f6692ff428efc1ad948f63e418e35aef0ed5e42a5f0d",
       "category": "Everywhere",
       "icon": "icons/back-to-top.svg",
-      "size": 2682
+      "size": 2682,
+      "featured": true
     },
     {
       "id": "block-youtube-redirect",
@@ -24,7 +25,8 @@
       "category": "Take control of tabs",
       "sha256": "808cbac9ff5cc35eebed4e75907f1f7511fb66c9e71f7227e532ceec624009d7",
       "icon": "icons/block-youtube-redirect.svg",
-      "size": 8239
+      "size": 8239,
+      "featured": true
     },
     {
       "id": "builtin-bgplay",
@@ -60,7 +62,8 @@
       "category": "Accessibility",
       "sha256": "98046930f79358030ecae0539fb76c10d6cf2590c57164df766d416fe79d0980",
       "icon": "icons/builtin-dark.svg",
-      "size": 276
+      "size": 276,
+      "featured": true
     },
     {
       "id": "builtin-font",
@@ -168,7 +171,8 @@
       "category": "Productivity",
       "sha256": "1ca2590387a102b90f44202a8cd741bdcb5bb8d49ddc403e19f2ba3a9d895c4c",
       "icon": "icons/cat-wiki.svg",
-      "size": 184
+      "size": 184,
+      "featured": true
     },
     {
       "id": "cat-ytad",
@@ -192,7 +196,8 @@
       "category": "Privacy",
       "sha256": "bd70abf0be3abe884ae1e471ddb223441bc66f5549861bc667ab95797fd50738",
       "icon": "icons/chrome-mask.svg",
-      "size": 2756
+      "size": 2756,
+      "featured": true
     },
     {
       "id": "cosmetic-cleanup",
@@ -252,7 +257,8 @@
       "category": "Productivity",
       "sha256": "8be25d594331c0c04cdc374e66e501ffdbff52b14565e5c8d0a6d36c68a720e7",
       "icon": "icons/hide-shorts.svg",
-      "size": 2362
+      "size": 2362,
+      "featured": true
     },
     {
       "id": "hn-comfort",
@@ -264,7 +270,8 @@
       "sha256": "d96e881d23e16c4fe1499008285511d4e6099933b7455c64022a81d020de652b",
       "category": "Reading",
       "icon": "icons/hn-comfort.svg",
-      "size": 1939
+      "size": 1939,
+      "featured": true
     },
     {
       "id": "no-miniplayer",

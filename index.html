@@ -138,6 +138,7 @@
   .add.copy{background:transparent;color:var(--dim);border:1px solid var(--line);margin-left:8px}
   .add.copy:hover{color:var(--txt);border-color:var(--accent)}
   .ico img{width:22px;height:22px;display:block;filter:brightness(0) invert(1)}
+  .add.upd{background:var(--brand);color:var(--brand-fg);margin-right:6px}
   .add.on:hover{background:rgba(220,53,69,.18);color:#ff9a9a;border-color:rgba(255,154,154,.35)}
   .hintbar{position:fixed;left:12px;right:12px;bottom:14px;z-index:60;display:none;
     background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:12px;
@@ -227,6 +228,7 @@
     { key: 'amoled',        name: 'AMOLED Black', desc: 'Pure black surfaces for OLED screens.', cat: 'Accessibility' }
   ];
   var all = [], builtins = [], view = 'discover', cat = 'All Items', theme = 'dark';
+  var versions = {};   // id -> the catalogue version this device installed
   var installed = {};
 
   var q = document.getElementById('q');
@@ -240,6 +242,7 @@
   try {
     var sp = new URLSearchParams(location.search);
     (sp.get('installed') || '').split(',').forEach(function (x) { if (x) installed[x.trim()] = 1; });
+    try { versions = JSON.parse(localStorage.getItem('nijatva.versions') || '{}') || {}; } catch (e) { versions = {}; }
     // what was installed from this page, kept so a pull-to-refresh does not
     // make every card look uninstalled again
     try {
@@ -293,7 +296,8 @@
     if (ins) {
       ev.preventDefault();
       handOff(ins.getAttribute('data-url'), ins.getAttribute('data-install'), true,
-              'Nothing opened - is the Nijatva app installed on this device?');
+              'Nothing opened - is the Nijatva app installed on this device?',
+              ins.getAttribute('data-version') || '');
       return;
     }
     var el = ev.target.closest ? ev.target.closest('[data-copy]') : null;
@@ -325,9 +329,13 @@
      ------------------------------------------------------------------ */
   var APK = 'https://github.com/vasudev-work/nijatva-browser/releases/latest/download/Nijatva-debug.apk';
 
-  function remember(id, on) {
-    if (on) installed[id] = 1; else delete installed[id];
-    try { localStorage.setItem('nijatva.installed', JSON.stringify(installed)); } catch (e) { }
+  function remember(id, on, version) {
+    if (on) { installed[id] = 1; if (version) versions[id] = version; }
+    else { delete installed[id]; delete versions[id]; }
+    try {
+      localStorage.setItem('nijatva.installed', JSON.stringify(installed));
+      localStorage.setItem('nijatva.versions', JSON.stringify(versions));
+    } catch (e) { }
     refreshIns();
   }
 
@@ -346,8 +354,8 @@
     hint._t = setTimeout(function () { b.classList.remove('on'); }, 5200);
   }
 
-  function handOff(url, id, on, msg) {
-    remember(id, on);
+  function handOff(url, id, on, msg, version) {
+    remember(id, on, version);
     var left = false;
     function away() { left = true; }
     document.addEventListener('visibilitychange', away, { once: true });
@@ -420,11 +428,21 @@
         '&i=' + encodeURIComponent(e.id || '') +
         '&h=' + encodeURIComponent(e.sha256 || '');
     var rmLink = 'nijatva://remove?id=' + encodeURIComponent(e.id || '');
-    var btn = isOn
+    // an installed script that has moved on in the catalogue gets an Update
+    var stale = isOn && versions[e.id] && e.version && versions[e.id] !== e.version;
+    var updLink = 'nijatva://update?u=' + encodeURIComponent(CDN + (e.file || '')) +
+      '&i=' + encodeURIComponent(e.id || '') + '&v=' + encodeURIComponent(e.version || '') +
+      '&h=' + encodeURIComponent(e.sha256 || '');
+    var btn = stale
+      ? '<a class="add upd" href="' + esc(updLink) + '" data-install="' + esc(e.id || '') +
+        '" data-url="' + esc(updLink) + '" data-version="' + esc(e.version || '') + '">Update</a>' +
+        '<a class="add on" href="' + esc(rmLink) + '" data-remove="' + esc(e.id || '') +
+        '" data-url="' + esc(rmLink) + '">Installed</a>'
+      : isOn
       ? '<a class="add on" href="' + esc(rmLink) + '" data-remove="' + esc(e.id || '') +
         '" data-url="' + esc(rmLink) + '">Installed</a>'
       : '<a class="add" href="' + esc(link) + '" data-install="' + esc(e.id || '') +
-        '" data-url="' + esc(link) + '">+ Add</a>' +
+        '" data-url="' + esc(link) + '" data-version="' + esc(e.version || '') + '">+ Add</a>' +
         '<a class="add copy" data-copy="' + esc(link) + '" href="#" title="Copy the install link">Copy</a>';
     return '<div class="card" data-id="' + esc(e.id || '') + '" style="animation-delay:' + Math.min(i * 30, 210) + 'ms">' +
       '<div class="c-top">' +
@@ -506,6 +524,12 @@
         '</div>' +
         '<div class="head"><h3>Recommended for you</h3>' +
         '<a href="#" data-go="extensions">See more</a></div>';
+      var picks = all.filter(function (e) { return e.featured; }).slice(0, 6);
+      if (picks.length) {
+        html2 += '<div class="head"><h3>Editor\'s picks</h3></div>';
+        picks.forEach(function (e, i) { html2 += card(e, i); });
+        html2 += '<div class="head"><h3>Recommended for you</h3></div>';
+      }
       if (!all.length) html2 += '<div class="state">Loading…</div>';
       else if (!rec.length) html2 += '<div class="state">Nothing matches that.</div>';
       else rec.forEach(function (e, i) { html2 += card(e, i); });
