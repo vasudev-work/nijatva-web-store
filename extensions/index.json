@@ -185,6 +185,26 @@
       "run_at": "document-start"
     },
     {
+      "icon": "icons/clean-copy.svg",
+      "id": "clean-copy",
+      "name": "Clean copy",
+      "desc": "Removes tracking tags from links you copy from the page.",
+      "pattern": "*",
+      "file": "clean-copy.js",
+      "version": "1.0",
+      "sha256": "9a12d8685688eea86cc6e11d0215145312d31aada25c523bb92fa4b260bcc326",
+      "size": 2961,
+      "category": "Privacy",
+      "tags": [
+        "Privacy"
+      ],
+      "permissions": [
+        "Changes text copied to the clipboard"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
       "icon": "icons/clean-links.svg",
       "id": "clean-links",
       "name": "Clean links",
@@ -225,6 +245,27 @@
       "run_at": "document-end"
     },
     {
+      "icon": "icons/copy-code.svg",
+      "id": "copy-code",
+      "name": "Copy code button",
+      "desc": "Adds a Copy button above each code block on the page.",
+      "pattern": "*",
+      "file": "copy-code.js",
+      "version": "1.0",
+      "sha256": "60e42853c6e9292db12ed6d943f37df783430be5c74c2dfcc23526f83c9918bc",
+      "size": 3068,
+      "category": "Developer",
+      "tags": [
+        "Developer"
+      ],
+      "permissions": [
+        "Adds a button to the page",
+        "Copies code to the clipboard when you tap Copy"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
       "icon": "icons/cosmetic-cleanup.svg",
       "id": "cosmetic-cleanup",
       "name": "Remove empty ad gaps",
@@ -241,6 +282,27 @@
       ],
       "permissions": [
         "Removes empty page containers"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/css-inspector.svg",
+      "id": "css-inspector",
+      "name": "CSS inspector",
+      "desc": "Hover or tap an element to see its size, font and colours.",
+      "pattern": "*",
+      "file": "css-inspector.js",
+      "version": "1.0",
+      "sha256": "cd9b7d61a9a6f632421a0b1cd0608b8a1e2a66a65985a780194e9eeb46dc70be",
+      "size": 6020,
+      "category": "Developer",
+      "tags": [
+        "Developer"
+      ],
+      "permissions": [
+        "Reads the styles of page elements while inspecting",
+        "Adds a panel and outline while inspecting only"
       ],
       "featured": false,
       "run_at": "document-end"
@@ -346,6 +408,27 @@
       ],
       "featured": false,
       "run_at": "document-start"
+    },
+    {
+      "icon": "icons/hide-ad-slots.svg",
+      "id": "hide-ad-slots",
+      "name": "Hide ad slots",
+      "desc": "Hides the boxes where ads are placed on a page.",
+      "pattern": "*",
+      "file": "hide-ad-slots.js",
+      "version": "1.0",
+      "sha256": "91718aaaa05556eb93df77cbfa14d7660bd31251488dad7575f334369b685c61",
+      "size": 1550,
+      "category": "Focus",
+      "tags": [
+        "Focus",
+        "Everywhere"
+      ],
+      "permissions": [
+        "Hides page elements"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
       "icon": "icons/hide-consent.svg",
@@ -512,6 +595,26 @@
       "run_at": "document-end"
     },
     {
+      "icon": "icons/reading-progress.svg",
+      "id": "reading-progress",
+      "name": "Reading progress bar",
+      "desc": "A thin bar at the top that shows how far you have read.",
+      "pattern": "*",
+      "file": "reading-progress.js",
+      "version": "1.0",
+      "sha256": "649d70f13950b612b7ef80c2717e7724f2702d6668cc657bb5477d7b04e7e686",
+      "size": 2126,
+      "category": "Reading",
+      "tags": [
+        "Reading"
+      ],
+      "permissions": [
+        "Adds a bar to the page"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
       "icon": "icons/builtin-ryd.svg",
       "id": "ryd",
       "name": "YouTube: show dislikes",
@@ -608,6 +711,46 @@
       ],
       "permissions": [
         "Changes link targets on the page"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/video-pip.svg",
+      "id": "video-pip",
+      "name": "Picture-in-picture key",
+      "desc": "Press P to pop the main video into a floating window.",
+      "pattern": "*",
+      "file": "video-pip.js",
+      "version": "1.0",
+      "sha256": "2f253ef52b4dc1bdf8a851c27ce107f1d7be49af11637b3e19be72f2a3ed20b2",
+      "size": 1833,
+      "category": "Media",
+      "tags": [
+        "Media"
+      ],
+      "permissions": [
+        "Opens the main video in a picture-in-picture window"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/video-speed.svg",
+      "id": "video-speed",
+      "name": "Video speed keys",
+      "desc": "Use [ and ] to slow down or speed up a video, \\ to reset.",
+      "pattern": "*",
+      "file": "video-speed.js",
+      "version": "1.0",
+      "sha256": "5dc05d233e7804f8e96cf21de83e73859c835dfd2f4e5814bc9b380afbe0e042",
+      "size": 2825,
+      "category": "Media",
+      "tags": [
+        "Media"
+      ],
+      "permissions": [
+        "Changes video playback speed"
       ],
       "featured": false,
       "run_at": "document-end"
