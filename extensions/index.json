@@ -308,27 +308,6 @@
       "run_at": "document-end"
     },
     {
-      "icon": "icons/css-viewer.svg",
-      "id": "css-viewer",
-      "name": "See the CSS",
-      "desc": "Long-press any element to read its computed styles.",
-      "pattern": "*",
-      "file": "css-viewer.js",
-      "version": "1.0",
-      "sha256": "a829cbc41dd8a23a8106c4fe6f4758ac76753358b4b1ad9bc52750f7d286de08",
-      "size": 3791,
-      "category": "Developer Tools",
-      "tags": [
-        "Developer Tools"
-      ],
-      "permissions": [
-        "Reads the styles of the element you press",
-        "Draws a panel over the page"
-      ],
-      "featured": false,
-      "run_at": "document-end"
-    },
-    {
       "icon": "icons/dark-scrollbars.svg",
       "id": "dark-scrollbars",
       "name": "Dark scrollbars",
