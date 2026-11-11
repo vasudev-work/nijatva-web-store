@@ -1,6 +1,4 @@
 {
-  "schema": 2,
-  "version": 2,
   "extensions": [
     {
       "icon": "icons/back-to-top.svg",
@@ -187,6 +185,7 @@
       "run_at": "document-start"
     },
     {
+      "icon": "icons/clean-links.svg",
       "id": "clean-links",
       "name": "Clean links",
       "desc": "Removes tracking tags such as utm_* and fbclid from links.",
@@ -203,8 +202,7 @@
         "Edits link addresses on the page"
       ],
       "featured": false,
-      "run_at": "document-end",
-      "icon": "icons/clean-links.svg"
+      "run_at": "document-end"
     },
     {
       "icon": "icons/builtin-cookie.svg",
@@ -248,26 +246,6 @@
       "run_at": "document-end"
     },
     {
-      "icon": "icons/builtin-dark.svg",
-      "id": "dark",
-      "name": "Dark mode for every page",
-      "desc": "Inverts light pages to dark. Photos and videos may look odd.",
-      "pattern": "*",
-      "file": "dark.js",
-      "version": "1.1",
-      "sha256": "e03f6a218a504db033c25985c7d61997743c254137973dcc6235259b5b4d8f5d",
-      "size": 730,
-      "category": "Accessibility",
-      "tags": [
-        "Accessibility"
-      ],
-      "permissions": [
-        "Changes how the page looks"
-      ],
-      "featured": true,
-      "run_at": "document-start"
-    },
-    {
       "icon": "icons/dark-scrollbars.svg",
       "id": "dark-scrollbars",
       "name": "Dark scrollbars",
@@ -285,6 +263,26 @@
         "Changes how the page looks"
       ],
       "featured": false,
+      "run_at": "document-start"
+    },
+    {
+      "icon": "icons/builtin-dark.svg",
+      "id": "dark",
+      "name": "Dark mode for every page",
+      "desc": "Inverts light pages to dark. Photos and videos may look odd.",
+      "pattern": "*",
+      "file": "dark.js",
+      "version": "1.1",
+      "sha256": "e03f6a218a504db033c25985c7d61997743c254137973dcc6235259b5b4d8f5d",
+      "size": 730,
+      "category": "Accessibility",
+      "tags": [
+        "Accessibility"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": true,
       "run_at": "document-start"
     },
     {
