@@ -38,3 +38,7 @@
   Signing now happens only when the `STORE_SIGNING_KEY` secret is set.
 - `index.json.sig` is stale after this change. Re-sign it with `tools/sign.py`
   before the in-app remote source can load the new catalogue.
+
+## Scripts added
+
+- `clean-links` (1.0): removes utm_*, fbclid, gclid and similar tracking tags from http(s) links. Tested in headless Chromium: encoding is preserved, and links added after page load are cleaned.

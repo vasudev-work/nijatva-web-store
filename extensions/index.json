@@ -1,4 +1,6 @@
 {
+  "schema": 2,
+  "version": 2,
   "extensions": [
     {
       "icon": "icons/back-to-top.svg",
@@ -185,6 +187,26 @@
       "run_at": "document-start"
     },
     {
+      "id": "clean-links",
+      "name": "Clean links",
+      "desc": "Removes tracking tags such as utm_* and fbclid from links.",
+      "pattern": "*",
+      "file": "clean-links.js",
+      "version": "1.0",
+      "sha256": "3f308e073363d92488e60e734db358bbb8736906c6d0cec190edcedfcd716866",
+      "size": 2910,
+      "category": "Privacy",
+      "tags": [
+        "Privacy"
+      ],
+      "permissions": [
+        "Edits link addresses on the page"
+      ],
+      "featured": false,
+      "run_at": "document-end",
+      "icon": "icons/clean-links.svg"
+    },
+    {
       "icon": "icons/builtin-cookie.svg",
       "id": "cookie",
       "name": "Accept cookies for me",
@@ -226,26 +248,6 @@
       "run_at": "document-end"
     },
     {
-      "icon": "icons/dark-scrollbars.svg",
-      "id": "dark-scrollbars",
-      "name": "Dark scrollbars",
-      "desc": "Dark scrollbars, so light pages have no bright bar.",
-      "pattern": "*",
-      "file": "dark-scrollbars.js",
-      "version": "1.1",
-      "sha256": "779330534fd46a11b5cd6adff1ef6d2f633dd6d09387ee2fee7fd90b9f876e7d",
-      "size": 841,
-      "category": "Accessibility",
-      "tags": [
-        "Accessibility"
-      ],
-      "permissions": [
-        "Changes how the page looks"
-      ],
-      "featured": false,
-      "run_at": "document-start"
-    },
-    {
       "icon": "icons/builtin-dark.svg",
       "id": "dark",
       "name": "Dark mode for every page",
@@ -263,6 +265,26 @@
         "Changes how the page looks"
       ],
       "featured": true,
+      "run_at": "document-start"
+    },
+    {
+      "icon": "icons/dark-scrollbars.svg",
+      "id": "dark-scrollbars",
+      "name": "Dark scrollbars",
+      "desc": "Dark scrollbars, so light pages have no bright bar.",
+      "pattern": "*",
+      "file": "dark-scrollbars.js",
+      "version": "1.1",
+      "sha256": "779330534fd46a11b5cd6adff1ef6d2f633dd6d09387ee2fee7fd90b9f876e7d",
+      "size": 841,
+      "category": "Accessibility",
+      "tags": [
+        "Accessibility"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
       "run_at": "document-start"
     },
     {
