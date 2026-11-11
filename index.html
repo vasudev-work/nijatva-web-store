@@ -135,8 +135,6 @@
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   body.settled .card{animation:none!important}
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
-  .add.copy{background:transparent;color:var(--dim);border:1px solid var(--line);margin-left:8px}
-  .add.copy:hover{color:var(--txt);border-color:var(--accent)}
   .ico img{width:22px;height:22px;display:block;filter:brightness(0) invert(1)}
   .add.upd{background:var(--brand);color:var(--brand-fg);margin-right:6px}
   .add.on:hover{background:rgba(220,53,69,.18);color:#ff9a9a;border-color:rgba(255,154,154,.35)}
@@ -144,7 +142,41 @@
     background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:12px;
     padding:12px 14px;font-size:13.5px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
   .hintbar.on{display:block}
-  .hintbar a{color:var(--accent);font-weight:600;text-decoration:none}
+  /* ---------- the pieces the new sheet and toolbar need ---------- */
+  .toolbar{display:flex;align-items:center;gap:10px;padding:0 18px 10px;flex-wrap:wrap}
+  .toolbar .grow{flex:1}
+  .toolbar .count{padding:0;color:var(--mut);font-size:13.5px}
+  .sel{appearance:none;-webkit-appearance:none;background:var(--surf2);color:var(--fg);
+       border:1px solid var(--line);border-radius:999px;padding:8px 30px 8px 14px;
+       font-size:13px;font-family:inherit;cursor:pointer;
+       background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239aa0a6' stroke-width='2.4' stroke-linecap='round'><path d='M5 9l7 7 7-7'/></svg>");
+       background-repeat:no-repeat;background-position:right 11px center}
+  .sec-t{font-size:11.5px;letter-spacing:1px;color:var(--mut);font-weight:700;
+         margin:20px 0 6px;text-transform:uppercase}
+  .trust{margin:0;padding:0;list-style:none}
+  .trust li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;
+            border-top:1px solid var(--line);font-size:13.5px;line-height:1.5}
+  .trust li .k{color:var(--mut);flex:none;min-width:92px}
+  .trust li .v{flex:1;min-width:0;word-break:break-word}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.5px;
+         border-radius:999px;padding:3px 9px;vertical-align:1px}
+  .badge.ok{background:rgba(12,144,84,.18);color:#3ddc97;border:1px solid rgba(61,220,151,.32)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
+        line-height:1.5;word-break:break-all}
+  .related{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 4px}
+  .rel{border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:12.5px;
+       color:var(--fg);text-decoration:none}
+  .rel:active{background:var(--surf2)}
+  .s-ico img{filter:none}
+  :focus-visible{outline:2.5px solid var(--brand);outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+      clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  /* these two rules referenced variables the theme never defined, so the
+     copy button and the toast rendered as unstyled boxes */
+  .add.copy{background:transparent;color:var(--mut);border:1px solid var(--line);margin-left:8px}
+  .add.copy:hover{color:var(--fg);border-color:var(--brand)}
+  .hintbar{background:var(--surf);border:1px solid var(--line);color:var(--fg)}
+  .hintbar a{color:var(--brand);font-weight:600;text-decoration:none}
 </style></head>
 <body>
 
@@ -158,7 +190,7 @@
     <label class="search">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
            stroke-linecap="round"><circle cx="11" cy="11" r="6.6"/><path d="M16.2 16.2 20.5 20.5"/></svg>
-      <input id="q" placeholder="Search" autocomplete="off">
+      <input id="q" placeholder="Search scripts" autocomplete="off" aria-label="Search scripts" type="search">
     </label>
     <button class="round" id="refresh" aria-label="Check for updates" title="Check for updates"
             onclick="refreshIndex()">
@@ -170,6 +202,8 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
            stroke-linecap="round"><path d="M12 4v10"/><path d="M8.5 10.5 12 14l3.5-3.5"/><path d="M5 19h14"/></svg>
     </button>
+    <button class="round" id="lang" aria-label="Language" title="Language"
+            style="font-size:13px;font-weight:700;letter-spacing:.5px">हिं</button>
     <button class="round" id="theme" aria-label="Theme"><span id="theme-ico"></span></button>
     <button class="pill" id="local">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -177,26 +211,26 @@
       Web
     </button>
   </div>
-  <div class="tabs">
-    <button class="tab on" data-view="discover">Discover</button>
-    <button class="tab" data-view="extensions">Extensions</button>
-    <button class="tab" data-view="themes">Themes</button>
-    <button class="tab" data-view="installed">Installed <span id="insn">0</span></button>
+  <div class="tabs" role="tablist" aria-label="Store sections">
+    <button class="tab on" data-view="discover" role="tab" aria-selected="true">Discover</button>
+    <button class="tab" data-view="extensions" role="tab" aria-selected="false">Extensions</button>
+    <button class="tab" data-view="themes" role="tab" aria-selected="false">Themes</button>
+    <button class="tab" data-view="installed" role="tab" aria-selected="false">Installed <span id="insn">0</span></button>
   </div>
 </div>
 
 <div id="view"></div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="side" id="side">
-  <h4>CATEGORIES</h4>
+<aside class="side" id="side" aria-hidden="true">
+  <h4 id="cats-head">CATEGORIES</h4>
   <div id="cats"></div>
   <hr>
-  <a class="legal" href="nijatva://settings">Privacy and security</a>
-  <a class="legal" href="nijatva://settings">Nijatva Terms of Service</a>
+  <a class="legal" id="legal-privacy" href="nijatva://settings">Privacy and security</a>
+  <a class="legal" id="legal-terms" href="nijatva://settings">Nijatva Terms of Service</a>
   <div class="copy" id="copy">© 2026 Nijatva Web Store</div>
   <p class="note" id="src"></p>
-  <p class="note">
+  <p class="note" id="note-chrome">
     These are <b>userscripts</b>, not Chrome extensions - Manifest V3 needs a
     Chromium engine with an extension API, and this browser runs on WebView.
     Ad blocking is already done natively before the page loads.
@@ -204,21 +238,26 @@
 </aside>
 
 <div class="sheet-scrim" id="sscrim"></div>
-<div class="sheet" id="sheet"><div class="grab"></div><div id="sheet-body"></div></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Script details"
+     aria-hidden="true" tabindex="-1"><div class="grab"></div><div id="sheet-body"></div></div>
 
 <script>
 (function () {
-  // this page lives in the store repository, so the catalogue is next to it
+  'use strict';
+
+  /* ------------------------------------------------------------------
+     Where the catalogue and the scripts live.
+
+     Both are next to this page, so the same file works on GitHub Pages
+     and from file://. Inside the browser the app passes its own base.
+     ------------------------------------------------------------------ */
   var BASE = 'extensions/';
-  // scripts are big and never change for a version, so the CDN serves them;
-  // the index must be fresh, so it comes from raw
   var CDN  = 'extensions/';
-  // on the web there is no host app to hand over a base, but keep the hook so the
-  // same file still works inside the browser
   try {
     var fromApp = new URLSearchParams(location.search).get('base');
     if (fromApp) { BASE = fromApp; CDN = fromApp; }
   } catch (e) { }
+
   var COL = ['#1a73e8', '#0c9054', '#e2543a', '#c13584', '#7b4bff', '#00a8a2', '#f5a623'];
   var THEMES = [
     { key: 'nijatva-dark',  name: 'Nijatva Dark',  desc: 'Blue and green on matte black - the default.', cat: 'Appearance' },
@@ -227,7 +266,90 @@
     { key: 'quiet-light',   name: 'Quiet Nature Light', desc: 'The sage palette on ivory.', cat: 'Appearance' },
     { key: 'amoled',        name: 'AMOLED Black', desc: 'Pure black surfaces for OLED screens.', cat: 'Accessibility' }
   ];
+
+  /* ------------------------------------------------------------------
+     Words. The UI speaks English and Hindi; script names and the one
+     line under them stay as their authors wrote them, because
+     translating a script's own description would put words in its
+     author's mouth.
+     ------------------------------------------------------------------ */
+  var LANG = 'en';
+  var T = {
+    en: {
+      discover: 'Discover', extensions: 'Extensions', themes: 'Themes', installed: 'Installed',
+      search: 'Search scripts', categories: 'CATEGORIES', allItems: 'All Items',
+      add: '+ Add', copy: 'Copy', installedOn: 'Installed', update: 'Update', remove: 'Remove',
+      apply: 'Apply', inUse: 'In use', builtIn: 'built in', noDownload: 'no download',
+      seeCollection: 'See collection', seeMore: 'See more',
+      recommended: 'Recommended for you', picks: "Editor's picks", allThemes: 'All Themes',
+      heroChip: 'NIJATVA WEB STORE', heroTitle: 'Scripts that quiet the web',
+      heroBody: 'Userscripts that make the pages you already read cleaner, quieter and faster.',
+      found: 'Found {n} matching items in Nijatva Web Store',
+      nothing: 'Nothing matches that.', loading: 'Loading…',
+      couldNotRead: 'The list could not be read.', couldNotReach: 'Could not reach the list. Check your connection.',
+      installedCount: '{n} of {total} scripts are on this device',
+      nothingInstalled: 'Nothing installed yet - pick something from Discover.',
+      themesCount: '{n} themes, all built in',
+      sort: 'Sort', sortRec: 'Recommended', sortAZ: 'Name A-Z', sortZA: 'Name Z-A',
+      sortSmall: 'Smallest first', sortNarrow: 'Narrowest reach first',
+      runsOn: 'Runs on', everySite: 'Every site you visit', sites: '{n} sites', oneSite: '1 site',
+      size: 'Size', version: 'Version', checksum: 'Checksum', source: 'Source',
+      whatItCan: 'What it can reach', reach: 'What it touches', type: 'Type', typeValue: 'Userscript, injected into the page',
+      verified: 'Verified at install', verifiedBody: 'The browser checks this SHA-256 before the script runs, so a file swapped under you is refused, not installed.',
+      reachBody: 'It can read and change the pages it matches. It cannot read other tabs, your files, your passwords or any other app.',
+      reachAll: 'This one matches every site, so it loads in every tab you open. That is a bigger promise than a script tied to one site.',
+      notChrome: 'Not a Chrome extension', notChromeBody: 'There is no chrome.* API in these browsers. Manifest V2/V3 needs a Chromium engine; this is a WebView. Ad blocking already happens natively, before the page loads.',
+      related: 'Related', close: 'Close', details: 'Details',
+      openSource: 'Open source', copyHash: 'Copy hash',
+      readFrom: 'Reading from {base} - change it in Settings, Extensions, Extension source.',
+      noSync: 'No account and no sync. Extensions install on this device only.',
+      nothingOpened: 'Nothing opened - is the Nijatva app installed on this device?',
+      upToDate: 'Up to date - {n} extensions', updated: 'Updated - {n} extensions',
+      exported: '{n} installed scripts exported', language: 'Language',
+      removeTitle: 'Remove this script?'
+    },
+    hi: {
+      discover: 'खोजें', extensions: 'एक्सटेंशन', themes: 'थीम', installed: 'इंस्टॉल',
+      search: 'स्क्रिप्ट खोजें', categories: 'श्रेणियाँ', allItems: 'सभी',
+      add: '+ जोड़ें', copy: 'कॉपी', installedOn: 'इंस्टॉल है', update: 'अपडेट', remove: 'हटाएँ',
+      apply: 'लगाएँ', inUse: 'चालू है', builtIn: 'ऐप में मौजूद', noDownload: 'डाउनलोड नहीं',
+      seeCollection: 'संग्रह देखें', seeMore: 'और देखें',
+      recommended: 'आपके लिए सुझाए गए', picks: 'संपादक की पसंद', allThemes: 'सभी थीम',
+      heroChip: 'निजत्व वेब स्टोर', heroTitle: 'वेब को शांत करने वाली स्क्रिप्ट',
+      heroBody: 'ऐसी स्क्रिप्ट जो आपके पढ़े जाने वाले पेजों को साफ़, शांत और तेज़ बनाती हैं।',
+      found: 'निजत्व वेब स्टोर में {n} आइटम मिले',
+      nothing: 'इससे कुछ मेल नहीं खाता।', loading: 'लोड हो रहा है…',
+      couldNotRead: 'सूची पढ़ी नहीं जा सकी।', couldNotReach: 'सूची तक नहीं पहुँच सके। कनेक्शन देखें।',
+      installedCount: 'इस डिवाइस पर {total} में से {n} स्क्रिप्ट मौजूद हैं',
+      nothingInstalled: 'अभी कुछ इंस्टॉल नहीं है - खोजें टैब से चुनें।',
+      themesCount: '{n} थीम, सभी ऐप में मौजूद',
+      sort: 'क्रम', sortRec: 'सुझाए गए', sortAZ: 'नाम अ-ज्ञ', sortZA: 'नाम ज्ञ-अ',
+      sortSmall: 'सबसे छोटी पहले', sortNarrow: 'सबसे कम साइटों वाली पहले',
+      runsOn: 'कहाँ चलती है', everySite: 'आपकी हर साइट पर', sites: '{n} साइट', oneSite: '1 साइट',
+      size: 'आकार', version: 'संस्करण', checksum: 'चेकसम', source: 'स्रोत',
+      whatItCan: 'यह कहाँ तक पहुँच सकती है', reach: 'यह क्या बदल सकती है', type: 'प्रकार', typeValue: 'यूज़रस्क्रिप्ट, पेज में इंजेक्ट',
+      verified: 'इंस्टॉल पर जाँचा गया', verifiedBody: 'ब्राउज़र स्क्रिप्ट चलने से पहले यह SHA-256 जाँचता है, इसलिए बदली हुई फ़ाइल इंस्टॉल नहीं होती।',
+      reachBody: 'यह उन्हीं पेजों को पढ़ और बदल सकती है जिनसे वह मेल खाती है। दूसरे टैब, आपकी फ़ाइलें, पासवर्ड या कोई दूसरा ऐप नहीं पढ़ सकती।',
+      reachAll: 'यह हर साइट से मेल खाती है, इसलिए आपके हर टैब में लोड होती है। यह एक साइट वाली स्क्रिप्ट से बड़ा वादा है।',
+      notChrome: 'यह Chrome एक्सटेंशन नहीं है', notChromeBody: 'इन ब्राउज़रों में chrome.* API नहीं है। Manifest V2/V3 के लिए Chromium इंजन चाहिए; यहाँ WebView है। विज्ञापन पहले से ही नेटिव रूप से रुकते हैं।',
+      related: 'संबंधित', close: 'बंद करें', details: 'विवरण',
+      openSource: 'सोर्स खोलें', copyHash: 'हैश कॉपी',
+      readFrom: 'पढ़ रहे हैं {base} से - इसे Settings, Extensions, Extension source में बदलें।',
+      noSync: 'कोई खाता नहीं, कोई सिंक नहीं। एक्सटेंशन सिर्फ़ इस डिवाइस पर इंस्टॉल होते हैं।',
+      nothingOpened: 'कुछ नहीं खुला - क्या इस डिवाइस पर निजत्व ऐप है?',
+      upToDate: 'अप टू डेट - {n} एक्सटेंशन', updated: 'अपडेट हुआ - {n} एक्सटेंशन',
+      exported: '{n} इंस्टॉल स्क्रिप्ट एक्सपोर्ट हुईं', language: 'भाषा',
+      removeTitle: 'यह स्क्रिप्ट हटाएँ?'
+    }
+  };
+  function t(k, vars) {
+    var s = (T[LANG] && T[LANG][k]) || T.en[k] || k;
+    if (vars) for (var v in vars) s = s.replace('{' + v + '}', vars[v]);
+    return s;
+  }
+
   var all = [], builtins = [], view = 'discover', cat = 'All Items', theme = 'dark';
+  var sort = 'rec';
   var versions = {};   // id -> the catalogue version this device installed
   var installed = {};
 
@@ -235,24 +357,31 @@
   var viewEl = document.getElementById('view');
   var scrim = document.getElementById('scrim');
   var side = document.getElementById('side');
+  var lastFocus = null;
 
-  // ids the app already has, handed over in the URL
   var currentTheme = '';
   var startTheme = '';
   try {
     var sp = new URLSearchParams(location.search);
     (sp.get('installed') || '').split(',').forEach(function (x) { if (x) installed[x.trim()] = 1; });
     try { versions = JSON.parse(localStorage.getItem('nijatva.versions') || '{}') || {}; } catch (e) { versions = {}; }
-    // what was installed from this page, kept so a pull-to-refresh does not
-    // make every card look uninstalled again
+    // what was installed from this page, kept so a refresh does not make
+    // every card look uninstalled again
     try {
       JSON.parse(localStorage.getItem('nijatva_installed') || '[]').forEach(function (x) {
         if (x) installed[x] = 1;
       });
     } catch (e) { }
+    // the older build wrote an object under a second key; read it too so
+    // nobody loses their list to a rename
+    try {
+      var legacy = JSON.parse(localStorage.getItem('nijatva.installed') || '{}') || {};
+      for (var lk in legacy) if (legacy[lk]) installed[lk] = 1;
+    } catch (e) { }
+    try { LANG = localStorage.getItem('nijatva.lang') || 'en'; } catch (e) { }
+    if (!T[LANG]) LANG = 'en';
     currentTheme = sp.get('theme') || '';
     startTheme = currentTheme;
-    // scripts that ship inside the app: id~name~desc~pattern~category, joined by |
     (sp.get('builtin') || '').split('|').forEach(function (row) {
       if (!row) return;
       var f = row.split('~');
@@ -263,8 +392,46 @@
   } catch (e) { }
 
 
-  /* On a computer the nijatva:// link cannot do anything, so the install address
-     is also offered as text to copy. */
+  /* ------------------------------------------------------------------
+     Small helpers
+     ------------------------------------------------------------------ */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function colour(s) { var x = 0; s = s || ''; for (var i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) % COL.length; return COL[x]; }
+  function cats() {
+    var set = {};
+    all.forEach(function (e) { set[e.category || 'Other'] = 1; });
+    return Object.keys(set).sort();
+  }
+  function kb(n) {
+    if (!n) return '';
+    if (n < 1024) return n + ' B';
+    return (n / 1024).toFixed(n < 10240 ? 1 : 0) + ' KB';
+  }
+  function asset(p) {
+    if (!p) return '';
+    if (/^https?:/i.test(p)) return p;
+    var b = BASE.charAt(BASE.length - 1) === '/' ? BASE : BASE + '/';
+    return b + p.replace(/^\.?\//, '');
+  }
+  function scriptUrl(e) { return CDN + (e.file || ''); }
+  function absScriptUrl(e) {
+    try { return new URL(scriptUrl(e), location.href).href; } catch (x) { return scriptUrl(e); }
+  }
+  /* a pattern is a comma separated list; '*' alone means every page */
+  function sites(e) {
+    var p = (e.pattern || '*').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+    return p.length ? p : ['*'];
+  }
+  function everySite(e) { var s = sites(e); return s.length === 1 && s[0] === '*'; }
+  function siteLabel(e) {
+    if (everySite(e)) return t('everySite');
+    var n = sites(e).length;
+    return n === 1 ? t('oneSite') : t('sites', { n: n });
+  }
   function copyText(s) {
     try {
       if (navigator.clipboard) navigator.clipboard.writeText(s);
@@ -276,48 +443,6 @@
       return true;
     } catch (e) { return false; }
   }
-  document.addEventListener('mouseover', function (ev) {
-    var a = ev.target.closest ? ev.target.closest('[data-remove]') : null;
-    if (a && a.textContent === 'Installed') a.textContent = 'Remove';
-  });
-  document.addEventListener('mouseout', function (ev) {
-    var a = ev.target.closest ? ev.target.closest('[data-remove]') : null;
-    if (a && a.textContent === 'Remove') a.textContent = 'Installed';
-  });
-  document.addEventListener('click', function (ev) {
-    var rm = ev.target.closest ? ev.target.closest('[data-remove]') : null;
-    if (rm) {
-      ev.preventDefault();
-      handOff(rm.getAttribute('data-url'), rm.getAttribute('data-remove'), false,
-              'Nothing opened - is the Nijatva app installed on this device?');
-      return;
-    }
-    var ins = ev.target.closest ? ev.target.closest('[data-install]') : null;
-    if (ins) {
-      ev.preventDefault();
-      handOff(ins.getAttribute('data-url'), ins.getAttribute('data-install'), true,
-              'Nothing opened - is the Nijatva app installed on this device?',
-              ins.getAttribute('data-version') || '');
-      return;
-    }
-    var el = ev.target.closest ? ev.target.closest('[data-copy]') : null;
-    if (!el) return;
-    ev.preventDefault();
-    var ok = copyText(el.getAttribute('data-copy'));
-    var old = el.textContent;
-    el.textContent = ok ? 'Copied' : 'Copy failed';
-    setTimeout(function () { el.textContent = old; }, 1200);
-  });
-
-
-  /* the icon path in the index is relative to the catalogue, not to this page */
-  function asset(p) {
-    if (!p) return '';
-    if (/^https?:/i.test(p)) return p;
-    var b = BASE.charAt(BASE.length - 1) === '/' ? BASE : BASE + '/';
-    return b + p.replace(/^\.?\//, '');
-  }
-
 
   /* ------------------------------------------------------------------
      Install and remove from the page.
@@ -330,10 +455,12 @@
   var APK = 'https://github.com/vasudev-work/nijatva-browser/releases/latest/download/Nijatva-debug.apk';
 
   function remember(id, on, version) {
+    if (!id) return;
     if (on) { installed[id] = 1; if (version) versions[id] = version; }
     else { delete installed[id]; delete versions[id]; }
     try {
-      localStorage.setItem('nijatva.installed', JSON.stringify(installed));
+      // the list this page reads back on load, and the one the app pokes
+      localStorage.setItem('nijatva_installed', JSON.stringify(Object.keys(installed)));
       localStorage.setItem('nijatva.versions', JSON.stringify(versions));
     } catch (e) { }
     refreshIns();
@@ -345,6 +472,7 @@
       b = document.createElement('div');
       b.id = 'hintbar';
       b.className = 'hintbar';
+      b.setAttribute('role', 'status');
       document.body.appendChild(b);
     }
     b.innerHTML = esc(msg) + (withApk
@@ -367,97 +495,64 @@
     }, 1400);
   }
 
-
-  /* how big the script is - a script that costs 40 KB is a different promise
-     from one that costs 600 bytes */
-  function kb(n) {
-    if (!n) return '';
-    if (n < 1024) return n + ' B';
-    return (n / 1024).toFixed(n < 10240 ? 1 : 0) + ' KB';
+  /* the address that installs one script */
+  function installLink(e) {
+    if (e.fromApp) return 'nijatva://install?b=' + encodeURIComponent(e.id);
+    return 'nijatva://install?u=' + encodeURIComponent(scriptUrl(e)) +
+      '&n=' + encodeURIComponent(e.name || 'Extension') +
+      '&p=' + encodeURIComponent(e.pattern || '*') +
+      '&i=' + encodeURIComponent(e.id || '') +
+      '&h=' + encodeURIComponent(e.sha256 || '');
   }
-
-  /* fetch the catalogue again, past any cache, and say what changed */
-  function refreshIndex() {
-    var before = all.length;
-    var x = new XMLHttpRequest();
-    x.open('GET', BASE + 'index.json?t=' + Date.now(), true);
-    x.onload = function () {
-      try {
-        var d = JSON.parse(x.responseText);
-        var list = d.extensions || d;
-        if (!list.length) throw 0;
-        all = list;
-        render(); renderCats();
-        hint(before === all.length ? 'Up to date - ' + all.length + ' extensions' : 'Updated - ' + all.length + ' extensions', false);
-      } catch (e) { hint('Could not reach the catalogue', false); }
-    };
-    x.onerror = function () { hint('Could not reach the catalogue', false); };
-    x.send();
-  }
-
-  /* the installed list, as a file - so it survives a cleared browser */
-  function exportInstalled() {
-    var ids = Object.keys(installed).filter(function (k) { return installed[k]; });
-    var data = JSON.stringify({ exported: new Date().toISOString(), installed: ids }, null, 2);
-    var a = document.createElement('a');
-    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(data);
-    a.download = 'nijatva-installed.json';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    hint(ids.length + ' installed scripts exported', false);
-  }
-
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-  function colour(s) { var x = 0; for (var i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) % COL.length; return COL[x]; }
-  function cats() {
-    var set = {};
-    all.forEach(function (e) { set[e.category || 'Other'] = 1; });
-    return Object.keys(set).sort();
-  }
-
-  function card(e, i) {
-    var nm = e.name || 'Extension';
-    var isOn = installed[e.id] ? true : false;
-    var link = e.fromApp
-      ? 'nijatva://install?b=' + encodeURIComponent(e.id)
-      : 'nijatva://install?u=' + encodeURIComponent(CDN + (e.file || '')) +
-        '&n=' + encodeURIComponent(nm) + '&p=' + encodeURIComponent(e.pattern || '*') +
-        '&i=' + encodeURIComponent(e.id || '') +
-        '&h=' + encodeURIComponent(e.sha256 || '');
-    var rmLink = 'nijatva://remove?id=' + encodeURIComponent(e.id || '');
-    // an installed script that has moved on in the catalogue gets an Update
-    var stale = isOn && versions[e.id] && e.version && versions[e.id] !== e.version;
-    var updLink = 'nijatva://update?u=' + encodeURIComponent(CDN + (e.file || '')) +
+  function updateLink(e) {
+    return 'nijatva://update?u=' + encodeURIComponent(scriptUrl(e)) +
       '&i=' + encodeURIComponent(e.id || '') + '&v=' + encodeURIComponent(e.version || '') +
       '&h=' + encodeURIComponent(e.sha256 || '');
-    var btn = stale
-      ? '<a class="add upd" href="' + esc(updLink) + '" data-install="' + esc(e.id || '') +
-        '" data-url="' + esc(updLink) + '" data-version="' + esc(e.version || '') + '">Update</a>' +
-        '<a class="add on" href="' + esc(rmLink) + '" data-remove="' + esc(e.id || '') +
-        '" data-url="' + esc(rmLink) + '">Installed</a>'
-      : isOn
-      ? '<a class="add on" href="' + esc(rmLink) + '" data-remove="' + esc(e.id || '') +
-        '" data-url="' + esc(rmLink) + '">Installed</a>'
-      : '<a class="add" href="' + esc(link) + '" data-install="' + esc(e.id || '') +
-        '" data-url="' + esc(link) + '" data-version="' + esc(e.version || '') + '">+ Add</a>' +
-        '<a class="add copy" data-copy="' + esc(link) + '" href="#" title="Copy the install link">Copy</a>';
-    return '<div class="card" data-id="' + esc(e.id || '') + '" style="animation-delay:' + Math.min(i * 30, 210) + 'ms">' +
+  }
+  function removeLink(e) { return 'nijatva://remove?id=' + encodeURIComponent(e.id || ''); }
+
+  function buttons(e) {
+    var isOn = installed[e.id] ? true : false;
+    var stale = isOn && versions[e.id] && e.version && versions[e.id] !== e.version;
+    if (stale) {
+      return '<a class="add upd" href="' + esc(updateLink(e)) + '" data-install="' + esc(e.id) +
+        '" data-url="' + esc(updateLink(e)) + '" data-version="' + esc(e.version || '') + '">' +
+        t('update') + '</a>' +
+        '<a class="add on" href="' + esc(removeLink(e)) + '" data-remove="' + esc(e.id) +
+        '" data-url="' + esc(removeLink(e)) + '">' + t('installedOn') + '</a>';
+    }
+    if (isOn) {
+      return '<a class="add on" href="' + esc(removeLink(e)) + '" data-remove="' + esc(e.id) +
+        '" data-url="' + esc(removeLink(e)) + '">' + t('installedOn') + '</a>';
+    }
+    var link = installLink(e);
+    return '<a class="add" href="' + esc(link) + '" data-install="' + esc(e.id) +
+      '" data-url="' + esc(link) + '" data-version="' + esc(e.version || '') + '">' + t('add') + '</a>' +
+      '<a class="add copy" data-copy="' + esc(link) + '" href="#" title="' + esc(t('copy')) + '">' +
+      esc(t('copy')) + '</a>';
+  }
+
+  /* ------------------------------------------------------------------
+     Cards
+     ------------------------------------------------------------------ */
+  function card(e, i) {
+    var nm = e.name || 'Extension';
+    return '<div class="card" data-id="' + esc(e.id || '') + '" tabindex="0" role="button" ' +
+      'aria-label="' + esc(nm + ' - ' + t('details')) + '" ' +
+      'style="animation-delay:' + Math.min(i * 30, 210) + 'ms">' +
       '<div class="c-top">' +
         '<div class="ico" style="background:' + colour(nm) + '">' +
         (e.icon ? '<img src="' + esc(asset(e.icon)) + '" alt="" loading="lazy">' : esc(nm.charAt(0).toUpperCase())) +
       '</div>' +
         '<div style="flex:1;min-width:0">' +
           '<div class="c-name">' + esc(nm) + '</div>' +
-          '<div class="c-meta"><span>' + (e.fromApp ? 'built in' : 'v' + esc(e.version || '1.0')) + '</span><span>·</span>' +
-          '<span>' + esc(e.pattern || '*') + '</span>' +
+          '<div class="c-meta"><span>' + (e.fromApp ? t('builtIn') : 'v' + esc(e.version || '1.0')) + '</span><span>·</span>' +
+          '<span>' + esc(siteLabel(e)) + '</span>' +
           (e.size ? '<span>·</span><span>' + kb(e.size) + '</span>' : '') + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="c-desc">' + esc(e.desc || '') + '</div>' +
-      '<div class="c-foot"><span class="cat">' + esc(e.category || 'Other') + '</span>' + btn + '</div>' +
+      '<div class="c-foot"><span class="cat">' + esc(e.category || 'Other') + '</span>' + buttons(e) + '</div>' +
     '</div>';
   }
 
@@ -473,6 +568,36 @@
     });
   }
 
+  /* Sorting is the user's answer to "which of these should I look at first".
+     Recommended keeps the editorial order; the rest are plain and predictable.
+     "Narrowest reach" is the trust-first order: a script tied to one site
+     before one that loads everywhere. */
+  function sorted(list) {
+    var out = list.slice();
+    if (sort === 'az') out.sort(function (a, b) { return (a.name || '').localeCompare(b.name || ''); });
+    else if (sort === 'za') out.sort(function (a, b) { return (b.name || '').localeCompare(a.name || ''); });
+    else if (sort === 'small') out.sort(function (a, b) { return (a.size || 0) - (b.size || 0); });
+    else if (sort === 'narrow') out.sort(function (a, b) { return sites(a).length - sites(b).length; });
+    else out.sort(function (a, b) {
+      var f = (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+      return f !== 0 ? f : (a.name || '').localeCompare(b.name || '');
+    });
+    return out;
+  }
+
+  function toolbar(n) {
+    var opts = [['rec', t('sortRec')], ['az', t('sortAZ')], ['za', t('sortZA')],
+                ['small', t('sortSmall')], ['narrow', t('sortNarrow')]];
+    var h = '<div class="toolbar"><span class="count" style="padding:0">' +
+      esc(t('found', { n: n })) + '</span><span class="grow"></span>' +
+      '<label class="sr" for="sort">' + esc(t('sort')) + '</label>' +
+      '<select class="sel" id="sort">';
+    opts.forEach(function (o) {
+      h += '<option value="' + o[0] + '"' + (sort === o[0] ? ' selected' : '') + '>' + esc(o[1]) + '</option>';
+    });
+    return h + '</select></div>';
+  }
+
   function refreshIns() {
     var n = 0;
     for (var k in installed) if (installed[k]) n++;
@@ -480,22 +605,26 @@
     if (el) el.textContent = n;
   }
 
+  /* ------------------------------------------------------------------
+     Views
+     ------------------------------------------------------------------ */
   function render() {
     refreshIns();
     var term = q.value || '';
+
     if (view === 'themes') {
-      var html = '<div class="head"><h3>All Themes</h3></div>' +
-        '<div class="count">' + THEMES.length + ' themes, all built in</div>';
-      THEMES.forEach(function (t, i) {
+      var html = '<div class="head"><h3>' + esc(t('allThemes')) + '</h3></div>' +
+        '<div class="count">' + esc(t('themesCount', { n: THEMES.length })) + '</div>';
+      THEMES.forEach(function (th, i) {
         html += '<div class="card" style="animation-delay:' + (i * 30) + 'ms">' +
-          '<div class="c-top"><div class="ico" style="background:' + colour(t.name) + '">◐</div>' +
-          '<div style="flex:1;min-width:0"><div class="c-name">' + esc(t.name) + '</div>' +
-          '<div class="c-meta"><span>built in</span><span>·</span><span>no download</span></div></div></div>' +
-          '<div class="c-desc">' + esc(t.desc) + '</div>' +
-          '<div class="c-foot"><span class="cat">' + esc(t.cat) + '</span>' +
-          (currentTheme === t.key
-            ? '<span class="add on">In use</span>'
-            : '<a class="add" href="nijatva://theme?name=' + encodeURIComponent(t.key) + '">Apply</a>') +
+          '<div class="c-top"><div class="ico" style="background:' + colour(th.name) + '">◐</div>' +
+          '<div style="flex:1;min-width:0"><div class="c-name">' + esc(th.name) + '</div>' +
+          '<div class="c-meta"><span>' + esc(t('builtIn')) + '</span><span>·</span><span>' + esc(t('noDownload')) + '</span></div></div></div>' +
+          '<div class="c-desc">' + esc(th.desc) + '</div>' +
+          '<div class="c-foot"><span class="cat">' + esc(th.cat) + '</span>' +
+          (currentTheme === th.key
+            ? '<span class="add on">' + esc(t('inUse')) + '</span>'
+            : '<a class="add" href="nijatva://theme?name=' + encodeURIComponent(th.key) + '">' + esc(t('apply')) + '</a>') +
           '</div></div>';
       });
       viewEl.innerHTML = html;
@@ -504,45 +633,45 @@
 
     if (view === 'installed') {
       var mine = all.filter(function (e) { return installed[e.id]; });
-      var h = '<div class="head"><h3>Installed</h3></div>' +
-        '<div class="count">' + mine.length + ' of ' + all.length + ' scripts are on this device</div>';
-      if (!mine.length) h += '<div class="state">Nothing installed yet - pick something from Discover.</div>';
+      var h = '<div class="head"><h3>' + esc(t('installed')) + '</h3></div>' +
+        '<div class="count">' + esc(t('installedCount', { n: mine.length, total: all.length })) + '</div>';
+      if (!mine.length) h += '<div class="state">' + esc(t('nothingInstalled')) + '</div>';
       else mine.forEach(function (e, i) { h += card(e, i); });
       viewEl.innerHTML = h;
       return;
     }
 
     if (view === 'discover') {
-      var rec = listFor(term, true).slice(0, 3);
+      var rec = sorted(listFor(term, true)).slice(0, 3);
+      var picks = all.filter(function (e) { return e.featured; }).slice(0, 6);
       var html2 =
         '<div class="hero">' +
-          '<span class="chip">NIJATVA WEB STORE FEATURED</span>' +
-          '<h2>Favorites of 2026</h2>' +
-          '<p>Scripts that make the pages you already read cleaner, quieter and faster.</p>' +
-          '<a class="cta" href="#" data-go="extensions">See collection →</a>' +
-          '<div class="cup">🏆</div>' +
-        '</div>' +
-        '<div class="head"><h3>Recommended for you</h3>' +
-        '<a href="#" data-go="extensions">See more</a></div>';
-      var picks = all.filter(function (e) { return e.featured; }).slice(0, 6);
+          '<span class="chip">' + esc(t('heroChip')) + '</span>' +
+          '<h2>' + esc(t('heroTitle')) + '</h2>' +
+          '<p>' + esc(t('heroBody')) + '</p>' +
+          '<a class="cta" href="#" data-go="extensions">' + esc(t('seeCollection')) + ' →</a>' +
+          '<div class="cup" aria-hidden="true">🏆</div>' +
+        '</div>';
       if (picks.length) {
-        html2 += '<div class="head"><h3>Editor\'s picks</h3></div>';
+        html2 += '<div class="head"><h3>' + esc(t('picks')) + '</h3>' +
+          '<a href="#" data-go="extensions">' + esc(t('seeMore')) + '</a></div>';
         picks.forEach(function (e, i) { html2 += card(e, i); });
-        html2 += '<div class="head"><h3>Recommended for you</h3></div>';
       }
-      if (!all.length) html2 += '<div class="state">Loading…</div>';
-      else if (!rec.length) html2 += '<div class="state">Nothing matches that.</div>';
+      html2 += '<div class="head"><h3>' + esc(t('recommended')) + '</h3>' +
+        '<a href="#" data-go="extensions">' + esc(t('seeMore')) + '</a></div>';
+      if (!all.length) html2 += '<div class="state">' + esc(t('loading')) + '</div>';
+      else if (!rec.length) html2 += '<div class="state">' + esc(t('nothing')) + '</div>';
       else rec.forEach(function (e, i) { html2 += card(e, i); });
       viewEl.innerHTML = html2;
       document.body.classList.add('settled');
       return;
     }
 
-    var items = listFor(term);
-    var html3 = '<div class="head"><h3>' + (cat === 'All Items' ? 'All Extensions' : esc(cat)) + '</h3></div>' +
-      '<div class="count">Found ' + items.length + ' matching items in Nijatva Web Store</div>';
-    if (!all.length) html3 += '<div class="state">Loading…</div>';
-    else if (!items.length) html3 += '<div class="state">Nothing matches that.</div>';
+    var items = sorted(listFor(term));
+    var html3 = '<div class="head"><h3>' + (cat === 'All Items' ? esc(t('extensions')) : esc(cat)) + '</h3></div>' +
+      toolbar(items.length);
+    if (!all.length) html3 += '<div class="state">' + esc(t('loading')) + '</div>';
+    else if (!items.length) html3 += '<div class="state">' + esc(t('nothing')) + '</div>';
     else items.forEach(function (e, i) { html3 += card(e, i); });
     viewEl.innerHTML = html3;
   }
@@ -555,11 +684,12 @@
     var icons = { 'All Items': '◎', 'Productivity': '⚡', 'Helpful AI Assistants': '🤖',
                   'Take control of tabs': '🗂', 'Lifestyle & Games': '☕',
                   'Developer Tools': '⌘', 'Accessibility': '♿', 'Privacy': '🛡',
-                  'Reading': '📖', 'YouTube': '▶', 'Other': '◻' };
+                  'Reading': '📖', 'YouTube': '▶', 'Appearance': '◐', 'Other': '◻' };
     var html = '';
     names.forEach(function (n) {
       html += '<a class="item' + (n === cat ? ' on' : '') + '" href="#" data-cat="' + esc(n) + '">' +
-        '<span>' + (icons[n] || '◻') + '</span>' + esc(n) +
+        '<span aria-hidden="true">' + (icons[n] || '◻') + '</span>' +
+        esc(n === 'All Items' ? t('allItems') : n) +
         '<span style="margin-left:auto;color:var(--mut);font-size:12.5px">' + (counts[n] || 0) + '</span></a>';
     });
     document.getElementById('cats').innerHTML = html;
@@ -567,86 +697,166 @@
 
   function setView(v) {
     view = v;
-    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
-      t.classList.toggle('on', t.getAttribute('data-view') === v);
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (tb) {
+      var on = tb.getAttribute('data-view') === v;
+      tb.classList.toggle('on', on);
+      tb.setAttribute('aria-selected', on ? 'true' : 'false');
     });
     render();
   }
 
-  // called from the app once the extension is actually installed
-  window.__nijatvaInstalled = function (id) {
-    try {
-      if (!id) return;
-      installed[id] = 1;
-      try {
-        var keep = Object.keys(installed);
-        localStorage.setItem('nijatva_installed', JSON.stringify(keep));
-      } catch (e) { }
-      closeSheet();
-      render();
-    } catch (e) { }
-  };
-
+  /* ------------------------------------------------------------------
+     The detail sheet: what this script is, what it can reach, and the
+     two things a person should be able to check for themselves - the
+     checksum and the source.
+     ------------------------------------------------------------------ */
   function openSheet(e) {
     var nm = e.name || 'Extension';
+    lastFocus = document.activeElement;
     var isOn = installed[e.id] ? true : false;
-    var link = e.fromApp
-      ? 'nijatva://install?b=' + encodeURIComponent(e.id)
-      : 'nijatva://install?u=' + encodeURIComponent(src) +
-        '&n=' + encodeURIComponent(nm) + '&p=' + encodeURIComponent(e.pattern || '*') +
-        '&i=' + encodeURIComponent(e.id || '') +
-        '&h=' + encodeURIComponent(e.sha256 || '');
+    var link = installLink(e);
     var action = isOn
-      ? '<span class="add on">Installed</span>'
-      : '<a class="add" href="' + esc(link) + '">Add to Nijatva</a>';
+      ? '<span class="add on">' + esc(t('installedOn')) + '</span>'
+      : '<a class="add" href="' + esc(link) + '" data-install="' + esc(e.id || '') +
+        '" data-url="' + esc(link) + '" data-version="' + esc(e.version || '') + '">' + esc(t('add')) + '</a>' +
+        '<a class="add copy" data-copy="' + esc(link) + '" href="#">' + esc(t('copy')) + '</a>';
+
+    var siteRows = everySite(e) ? '' :
+      '<div class="kv"><span>' + esc(t('runsOn')) + '</span><span>' +
+      sites(e).map(esc).join('<br>') + '</span></div>';
+
+    var rel = all.filter(function (x) {
+      return x.id !== e.id && (x.category || 'Other') === (e.category || 'Other');
+    }).slice(0, 4);
+
     document.getElementById('sheet-body').innerHTML =
       '<div class="s-top">' +
-        '<div class="s-ico" style="background:' + colour(nm) + '">' + esc(nm.charAt(0).toUpperCase()) + '</div>' +
+        '<div class="s-ico" style="background:' + colour(nm) + '">' +
+        (e.icon ? '<img src="' + esc(asset(e.icon)) + '" alt="" style="width:34px;height:34px">'
+                : esc(nm.charAt(0).toUpperCase())) + '</div>' +
         '<div style="flex:1;min-width:0"><div class="s-name">' + esc(nm) + '</div>' +
-        '<div class="s-meta"><span>' + (e.fromApp ? 'built in' : 'v' + esc(e.version || '1.0')) + '</span><span>·</span>' +
-        '<span>' + esc(e.category || 'Other') + '</span></div></div>' +
+        '<div class="s-meta"><span>' + (e.fromApp ? esc(t('builtIn')) : 'v' + esc(e.version || '1.0')) + '</span><span>·</span>' +
+        '<span>' + esc(e.category || 'Other') + '</span><span>·</span>' +
+        '<span>' + esc(siteLabel(e)) + '</span></div></div>' +
+        '<button class="round" data-close="1" aria-label="' + esc(t('close')) + '" ' +
+        'style="width:36px;height:36px;flex:none">✕</button>' +
       '</div>' +
       '<p class="s-body">' + esc(e.desc || '') + '</p>' +
-      '<div class="kv"><span>Runs on</span><span>' + esc(e.pattern || '*') + '</span></div>' +
-      '<div class="kv"><span>Type</span><span>Userscript, injected into the page</span></div>' +
-      '<div class="kv"><span>Needs</span><span>Nothing outside the page</span></div>' +
-      (e.size ? '<div class="kv"><span>Size</span><span>' + kb(e.size) + '</span></div>' : '') +
-      '<div class="kv"><span>Source</span><span>' + esc(e.fromApp ? 'ships with the app' : (e.file || '')) + '</span></div>' +
+
+      '<div class="sec-t">' + esc(t('whatItCan')) + '</div>' +
+      '<ul class="trust">' +
+        '<li><span class="k">' + esc(t('runsOn')) + '</span><span class="v">' + esc(siteLabel(e)) +
+          (everySite(e) ? '<br><span style="color:var(--mut)">' + esc(t('reachAll')) + '</span>' : '') + '</span></li>' +
+        '<li><span class="k">' + esc(t('reach')) + '</span><span class="v">' + esc(t('reachBody')) + '</span></li>' +
+        '<li><span class="k">' + esc(t('type')) + '</span><span class="v">' + esc(t('typeValue')) + '</span></li>' +
+        (e.size ? '<li><span class="k">' + esc(t('size')) + '</span><span class="v">' + kb(e.size) + '</span></li>' : '') +
+        (e.version ? '<li><span class="k">' + esc(t('version')) + '</span><span class="v">' + esc(e.version) + '</span></li>' : '') +
+      '</ul>' +
+
+      (e.sha256
+        ? '<div class="sec-t">' + esc(t('verified')) + ' <span class="badge ok">SHA-256</span></div>' +
+          '<p class="s-body" style="font-size:13px;margin-bottom:6px">' + esc(t('verifiedBody')) + '</p>' +
+          '<div class="kv"><span>' + esc(t('checksum')) + '</span><span class="mono" style="max-width:66%">' +
+          esc(e.sha256) + '</span></div>' +
+          '<div class="s-actions" style="margin-top:10px">' +
+            '<a class="ghost" data-copy="' + esc(e.sha256) + '" href="#">' + esc(t('copyHash')) + '</a>' +
+            (e.file ? '<a class="ghost" href="' + esc(absScriptUrl(e)) + '" target="_blank" rel="noopener">' +
+              esc(t('openSource')) + '</a>' : '') +
+          '</div>'
+        : '') +
+
+      '<div class="sec-t">' + esc(t('notChrome')) + '</div>' +
+      '<p class="s-body" style="font-size:13px">' + esc(t('notChromeBody')) + '</p>' +
+
+      (rel.length
+        ? '<div class="sec-t">' + esc(t('related')) + '</div><div class="related">' +
+          rel.map(function (x) {
+            return '<a class="rel" href="#" data-open="' + esc(x.id || '') + '">' + esc(x.name || x.id) + '</a>';
+          }).join('') + '</div>'
+        : '') +
+
       '<div class="s-actions">' + action + '</div>';
-    document.getElementById('sheet').classList.add('on');
+
+    var sheet = document.getElementById('sheet');
+    sheet.classList.add('on');
+    sheet.setAttribute('aria-hidden', 'false');
     document.getElementById('sscrim').classList.add('on');
+    try { sheet.scrollTop = 0; sheet.focus(); } catch (x) { }
   }
+
   function closeSheet() {
-    document.getElementById('sheet').classList.remove('on');
+    var sheet = document.getElementById('sheet');
+    sheet.classList.remove('on');
+    sheet.setAttribute('aria-hidden', 'true');
     document.getElementById('sscrim').classList.remove('on');
+    if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) { } }
+  }
+
+  function openById(id) {
+    var hit = all.filter(function (x) { return (x.id || '') === id; })[0];
+    if (hit) openSheet(hit);
+  }
+
+  /* ------------------------------------------------------------------
+     Catalogue
+     ------------------------------------------------------------------ */
+  function merge(list) {
+    var seen = {};
+    var remote = (list || []).slice();
+    var merged = remote.concat(builtins.filter(function (b) { return !seen[b.id]; }));
+    return merged.filter(function (e) { if (seen[e.id]) return false; seen[e.id] = 1; return true; });
+  }
+
+  function refreshIndex() {
+    var before = all.length;
+    var x = new XMLHttpRequest();
+    x.open('GET', BASE + 'index.json?t=' + Date.now(), true);
+    x.onload = function () {
+      try {
+        var d = JSON.parse(x.responseText);
+        var list = d.extensions || d;
+        if (!list.length) throw 0;
+        all = merge(list);
+        renderCats(); render();
+        hint(before === all.length ? t('upToDate', { n: all.length })
+                                   : t('updated', { n: all.length }), false);
+      } catch (e) { hint(t('couldNotReach'), false); }
+    };
+    x.onerror = function () { hint(t('couldNotReach'), false); };
+    x.send();
+  }
+
+  function exportInstalled() {
+    var ids = Object.keys(installed).filter(function (k) { return installed[k]; });
+    var data = JSON.stringify({ exported: new Date().toISOString(), installed: ids }, null, 2);
+    var a = document.createElement('a');
+    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(data);
+    a.download = 'nijatva-installed.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    hint(t('exported', { n: ids.length }), false);
   }
 
   function load() {
-    viewEl.innerHTML = '<div class="state">Loading…</div>';
+    viewEl.innerHTML = '<div class="state">' + esc(t('loading')) + '</div>';
     var xhr = new XMLHttpRequest();
     xhr.open('GET', BASE + 'index.json?t=' + Date.now(), true);
     xhr.onload = function () {
       try {
         var d = JSON.parse(xhr.responseText);
-        var remote = (d.extensions || []).slice();
-        var seen = {};
-        all = remote.concat(builtins.filter(function (b) { return !seen[b.id]; }));
-        all = all.filter(function (e) { if (seen[e.id]) return false; seen[e.id] = 1; return true; });
+        all = merge(d.extensions || d);
         renderCats();
         render();
-      } catch (e) { viewEl.innerHTML = '<div class="state">The list could not be read.</div>'; }
+      } catch (e) { viewEl.innerHTML = '<div class="state">' + esc(t('couldNotRead')) + '</div>'; }
     };
     xhr.onerror = function () {
-      viewEl.innerHTML = '<div class="state">Could not reach the list. Check your connection.</div>';
+      viewEl.innerHTML = '<div class="state">' + esc(t('couldNotReach')) + '</div>';
     };
     xhr.send();
   }
 
-  try {
-    document.getElementById('src').innerHTML =
-      'Reading from <b>' + esc(BASE) + '</b> - change it in Settings, Extensions, Extension source.';
-  } catch (e) { }
-
+  /* ------------------------------------------------------------------
+     Chrome: theme, language, search, taps
+     ------------------------------------------------------------------ */
   var ICO_SUN = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
     'stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/>' +
     '<path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"/></svg>';
@@ -656,57 +866,194 @@
 
   function paintTheme() {
     try {
-      // in dark the button offers light, and the other way round
       document.getElementById('theme-ico').innerHTML = theme === 'dark' ? ICO_SUN : ICO_MOON;
       document.documentElement.setAttribute('data-theme', theme);
+      var b = document.getElementById('theme');
+      if (b) b.setAttribute('aria-label', theme === 'dark' ? 'Light theme' : 'Dark theme');
     } catch (e) { }
+  }
+
+  /* The chrome - tabs, search box, sidebar - is static HTML, so it has to be
+     relabelled by hand when the language changes. Everything else is built by
+     render() and picks the new words up on its own. */
+  function paintChrome() {
+    try {
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (tb) {
+        var v = tb.getAttribute('data-view');
+        if (v === 'installed') {
+          var n = 0;
+          for (var k in installed) if (installed[k]) n++;
+          tb.innerHTML = esc(t('installed')) + ' <span id="insn">' + n + '</span>';
+        } else {
+          tb.textContent = t(v);
+        }
+      });
+      q.placeholder = t('search');
+      q.setAttribute('aria-label', t('search'));
+      var h4 = document.getElementById('cats-head');
+      if (h4) h4.textContent = t('categories');
+      var note = document.getElementById('note-chrome');
+      if (note) note.innerHTML = esc(t('notChromeBody'));
+      var lp = document.getElementById('legal-privacy');
+      if (lp) lp.textContent = LANG === 'hi' ? 'निजता और सुरक्षा' : 'Privacy and security';
+      var lt = document.getElementById('legal-terms');
+      if (lt) lt.textContent = LANG === 'hi' ? 'निजत्व सेवा की शर्तें' : 'Nijatva Terms of Service';
+    } catch (e) { }
+  }
+
+  function paintLang() {
+    var b = document.getElementById('lang');
+    if (b) {
+      b.textContent = LANG === 'en' ? 'हिं' : 'EN';
+      b.setAttribute('aria-label', t('language'));
+      b.setAttribute('title', t('language'));
+    }
+    document.documentElement.setAttribute('lang', LANG === 'hi' ? 'hi' : 'en');
+    paintChrome();
   }
 
   var qt = null;
   q.addEventListener('input', function () {
-    // one render per pause, not one per key
     clearTimeout(qt);
     qt = setTimeout(render, 120);
   });
+
   document.getElementById('theme').addEventListener('click', function () {
     theme = theme === 'dark' ? 'light' : 'dark';
     paintTheme();
+    try { localStorage.setItem('nijatva.theme', theme); } catch (e) { }
   });
-  document.getElementById('local').addEventListener('click', function () {
-    alert('No account and no sync. Extensions install on this device only.');
+
+  document.getElementById('lang').addEventListener('click', function () {
+    LANG = LANG === 'en' ? 'hi' : 'en';
+    try { localStorage.setItem('nijatva.lang', LANG); } catch (e) { }
+    paintLang(); renderCats(); render();
   });
+
+  document.getElementById('local').addEventListener('click', function () { hint(t('noSync'), false); });
+
   document.getElementById('menu').addEventListener('click', function () {
     side.classList.add('on'); scrim.classList.add('on');
+    side.setAttribute('aria-hidden', 'false');
   });
   scrim.addEventListener('click', function () {
     side.classList.remove('on'); scrim.classList.remove('on');
+    side.setAttribute('aria-hidden', 'true');
   });
   document.getElementById('sscrim').addEventListener('click', closeSheet);
-  document.addEventListener('click', function (ev) {
-    // a tap on the card opens its details; a tap on Add still installs
-    if (ev.target.closest && !ev.target.closest('.add')) {
-      var c = ev.target.closest('.card[data-id]');
-      if (c) {
-        var id = c.getAttribute('data-id');
-        var hit = all.filter(function (x) { return (x.id || '') === id; })[0];
-        if (hit) { ev.preventDefault(); openSheet(hit); return; }
+
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') {
+      if (document.getElementById('sheet').classList.contains('on')) { closeSheet(); return; }
+      if (side.classList.contains('on')) {
+        side.classList.remove('on'); scrim.classList.remove('on');
+        side.setAttribute('aria-hidden', 'true');
       }
     }
-    var t = ev.target.closest ? ev.target.closest('[data-go],[data-cat]') : null;
-    if (!t) return;
-    ev.preventDefault();
-    if (t.hasAttribute('data-go')) { setView(t.getAttribute('data-go')); return; }
-    cat = t.getAttribute('data-cat');
-    renderCats();
-    side.classList.remove('on'); scrim.classList.remove('on');
-    if (view === 'discover') setView('extensions'); else render();
+    // a card is focusable, so Enter and Space have to open it like a tap
+    var el = ev.target;
+    if (el && el.classList && el.classList.contains('card') && el.getAttribute('data-id') &&
+        (ev.key === 'Enter' || ev.key === ' ')) {
+      ev.preventDefault();
+      openById(el.getAttribute('data-id'));
+    }
   });
-  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
-    t.addEventListener('click', function () { setView(t.getAttribute('data-view')); });
+
+  document.addEventListener('change', function (ev) {
+    if (ev.target && ev.target.id === 'sort') {
+      sort = ev.target.value;
+      render();
+    }
   });
+
+  document.addEventListener('mouseover', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('[data-remove]') : null;
+    if (a && a.textContent === t('installedOn')) a.textContent = t('remove');
+  });
+  document.addEventListener('mouseout', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('[data-remove]') : null;
+    if (a && a.textContent === t('remove')) a.textContent = t('installedOn');
+  });
+
+  document.addEventListener('click', function (ev) {
+    if (!ev.target.closest) return;
+
+    if (ev.target.closest('[data-close]')) { ev.preventDefault(); closeSheet(); return; }
+
+    var op = ev.target.closest('[data-open]');
+    if (op) { ev.preventDefault(); openById(op.getAttribute('data-open')); return; }
+
+    var rm = ev.target.closest('[data-remove]');
+    if (rm) {
+      ev.preventDefault();
+      handOff(rm.getAttribute('data-url'), rm.getAttribute('data-remove'), false, t('nothingOpened'));
+      return;
+    }
+    var ins = ev.target.closest('[data-install]');
+    if (ins) {
+      ev.preventDefault();
+      handOff(ins.getAttribute('data-url'), ins.getAttribute('data-install'), true,
+              t('nothingOpened'), ins.getAttribute('data-version') || '');
+      return;
+    }
+    var cp = ev.target.closest('[data-copy]');
+    if (cp) {
+      ev.preventDefault();
+      var ok = copyText(cp.getAttribute('data-copy'));
+      var old = cp.textContent;
+      cp.textContent = ok ? 'Copied' : 'Copy failed';
+      setTimeout(function () { cp.textContent = old; }, 1200);
+      return;
+    }
+    var go = ev.target.closest('[data-go],[data-cat]');
+    if (go) {
+      ev.preventDefault();
+      if (go.hasAttribute('data-go')) { setView(go.getAttribute('data-go')); return; }
+      cat = go.getAttribute('data-cat');
+      renderCats();
+      side.classList.remove('on'); scrim.classList.remove('on');
+      side.setAttribute('aria-hidden', 'true');
+      if (view === 'discover') setView('extensions'); else render();
+      return;
+    }
+    // a tap on the card opens its details; a tap on Add still installs
+    if (!ev.target.closest('.add')) {
+      var c = ev.target.closest('.card[data-id]');
+      if (c) { ev.preventDefault(); openById(c.getAttribute('data-id')); }
+    }
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (tb) {
+    tb.addEventListener('click', function () { setView(tb.getAttribute('data-view')); });
+  });
+
+  // called from the app once the extension is actually installed
+  window.__nijatvaInstalled = function (id) {
+    try {
+      if (!id) return;
+      installed[id] = 1;
+      try { localStorage.setItem('nijatva_installed', JSON.stringify(Object.keys(installed))); } catch (e) { }
+      closeSheet();
+      render();
+    } catch (e) { }
+  };
+
+  try {
+    document.getElementById('src').innerHTML = esc(t('readFrom', { base: BASE }))
+      .replace(esc(BASE), '<b>' + esc(BASE) + '</b>');
+  } catch (e) { }
+
   // open in the same light or dark the browser is in
   if (startTheme.indexOf('light') >= 0) theme = 'light';
+  else {
+    try {
+      var saved = localStorage.getItem('nijatva.theme');
+      if (saved === 'light' || saved === 'dark') theme = saved;
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light';
+    } catch (e) { }
+  }
   paintTheme();
+  paintLang();
 
   load();
 })();
