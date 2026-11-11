@@ -246,6 +246,27 @@
       "run_at": "document-end"
     },
     {
+      "icon": "icons/css-viewer.svg",
+      "id": "css-viewer",
+      "name": "See the CSS",
+      "desc": "Long-press any element to read its computed styles.",
+      "pattern": "*",
+      "file": "css-viewer.js",
+      "version": "1.0",
+      "sha256": "a829cbc41dd8a23a8106c4fe6f4758ac76753358b4b1ad9bc52750f7d286de08",
+      "size": 3791,
+      "category": "Developer Tools",
+      "tags": [
+        "Developer Tools"
+      ],
+      "permissions": [
+        "Reads the styles of the element you press",
+        "Draws a panel over the page"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
       "icon": "icons/dark-scrollbars.svg",
       "id": "dark-scrollbars",
       "name": "Dark scrollbars",
@@ -450,6 +471,27 @@
       "run_at": "document-end"
     },
     {
+      "icon": "icons/pomodoro.svg",
+      "id": "pomodoro",
+      "name": "Focus timer",
+      "desc": "A 25 minute timer in the corner, for reading without drifting.",
+      "pattern": "*",
+      "file": "pomodoro.js",
+      "version": "1.0",
+      "sha256": "a04b25a0325a316892de00ef63695500b924e9b7dbeea33ad2ce951c12d25493",
+      "size": 2929,
+      "category": "Productivity",
+      "tags": [
+        "Productivity"
+      ],
+      "permissions": [
+        "Draws a small timer over the page",
+        "Plays a short tone when the time is up"
+      ],
+      "featured": false,
+      "run_at": "document-idle"
+    },
+    {
       "icon": "icons/reader-width.svg",
       "id": "reader-width",
       "name": "Readable article width",
@@ -508,6 +550,27 @@
       ],
       "featured": false,
       "run_at": "document-start"
+    },
+    {
+      "icon": "icons/sponsorblock.svg",
+      "id": "sponsorblock",
+      "name": "Skip sponsor segments",
+      "desc": "Skips sponsor reads and intros in YouTube videos.",
+      "pattern": "*youtube.com/watch*",
+      "file": "sponsorblock.js",
+      "version": "1.0",
+      "sha256": "176b922039a50f7648c1e47a711b801bbeea4f3a12e1637e2020531516809c33",
+      "size": 3733,
+      "category": "YouTube",
+      "tags": [
+        "YouTube"
+      ],
+      "permissions": [
+        "Reads the video id and asks sponsor.ajay.app for its segment list",
+        "Moves the video past the segments it is told about"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
       "icon": "icons/stop-autoplay.svg",
