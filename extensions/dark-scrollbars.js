@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name        Dark scrollbars
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Dark scrollbars, so light pages have no bright bar.
+// @match       *
+// @run-at      document-start
+// @grant       none
+// @tag         Accessibility
+// @permission  Changes how the page looks
+// ==/UserScript==
+
 /* Nijatva extension: dark scrollbars, so light pages stop showing a bright bar. */
 (function () {
   try {

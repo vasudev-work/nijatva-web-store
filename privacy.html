@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy and security - Nijatva Web Store</title>
+<meta name="description" content="What the Nijatva Web Store sends over the network, what scripts can do, and what is never collected.">
+<meta name="theme-color" content="#0b1220">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<style>
+  :root{--bg:#0b1220;--surf:#141d2e;--line:#22304a;--fg:#e8eaed;--mut:#9aa3b5;--brand:#8ab4f8;--warn:#f29900}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,Roboto,"Segoe UI",Arial,sans-serif;
+       padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+  main{max-width:720px;margin:0 auto;padding:28px 20px 60px}
+  a{color:var(--brand)}
+  h1{font-size:26px;margin:0 0 6px}
+  h2{font-size:18px;margin:28px 0 8px}
+  p,li{color:var(--fg)}
+  .lead{color:var(--mut)}
+  .card{background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:14px 0}
+  .yes{color:#81c995;font-weight:600}
+  .no{color:var(--warn);font-weight:600}
+  ul{padding-left:20px}
+  li{margin:6px 0}
+  .back{display:inline-block;margin-bottom:14px;text-decoration:none}
+  :focus-visible{outline:2.5px solid var(--brand);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">&larr; Back to the store</a>
+  <h1>Privacy and security</h1>
+  <p class="lead">The Nijatva Web Store is a catalogue of small scripts. This page says plainly what the store does and does not do. <span lang="hi">संक्षेप में: यह स्टोर कोई डेटा इकट्ठा नहीं करता।</span></p>
+
+  <h2>What the store page does</h2>
+  <div class="card">
+    <ul>
+      <li><span class="yes">Does not</span> use analytics, advertising or tracking scripts.</li>
+      <li>Loads the list of scripts (<code>index.json</code>) and the script files from GitHub Pages and GitHub.</li>
+      <li>Stores only your list of installed scripts and your language and theme choice, in this browser's local storage. Nothing is sent anywhere.</li>
+      <li>GitHub hosts the page and may keep standard server logs under its own privacy policy.</li>
+    </ul>
+  </div>
+
+  <h2>What the scripts can do</h2>
+  <p>Each script says what it can reach, in its own detail sheet under <em>What it can</em>. Scripts run inside the pages you choose to visit. A script with a <span class="no">!</span> mark does something that goes beyond changing how a page looks:</p>
+  <div class="card">
+    <ul>
+      <li><strong>YouTube dislikes</strong> sends the ID of each video you open to a third-party service, returnyoutubedislikeapi.com, to get the count.</li>
+      <li><strong>Cookie accept</strong> clicks the "accept" button on cookie banners for you. Read the banner first if you care what you agree to.</li>
+      <li><strong>Media finder</strong> reads the video and audio links on a page so the app's media tools can use them. It sends them to the app only.</li>
+      <li><strong>Background play</strong> makes a page believe it is always visible, so video can keep playing.</li>
+    </ul>
+  </div>
+
+  <h2>Scripts that are never allowed</h2>
+  <div class="card">
+    <ul>
+      <li>No script may add visible ads, links or content to a page.</li>
+      <li>No script may send your browsing history, passwords or form input anywhere.</li>
+      <li>Every script in the store is public source code. You can read it before you install it, and the install is refused if the file no longer matches the SHA-256 checksum in the catalogue.</li>
+    </ul>
+  </div>
+
+  <h2>Your choices</h2>
+  <ul>
+    <li>Remove a script at any time from the app's Extensions page.</li>
+    <li>Install from a copied link instead of the one-tap button if you want to check the file first.</li>
+    <li>Report a problem by opening an issue on <a href="https://github.com/vasudev-work/nijatva-web-store/issues">GitHub</a>.</li>
+  </ul>
+
+  <h2>Terms</h2>
+  <p>Scripts in <code>extensions/</code> are offered under the MIT licence unless a file says otherwise. The source is in the <a href="https://github.com/vasudev-work/nijatva-web-store">repository</a>.</p>
+</main>
+</body>
+</html>

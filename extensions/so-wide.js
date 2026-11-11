@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name        Stack Overflow: wide answers
 // @namespace   in.nijatva.store
-// @version     1.0
-// @description Gives the question and answers the full width; code scrolls sideways.
+// @version     1.1
+// @description Full-width questions and answers; code scrolls sideways.
 // @match       *stackoverflow.com*
 // @match       *stackexchange.com*
 // @match       *superuser.com*
@@ -10,6 +10,7 @@
 // @run-at      document-start
 // @grant       none
 // @tag         Developer
+// @permission  Changes how the page looks
 // ==/UserScript==
 
 /*

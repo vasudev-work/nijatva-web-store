@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name        Back to top
 // @namespace   in.nijatva.store
-// @version     1.0
-// @description A small button that jumps to the top once you have scrolled down.
+// @version     1.1
+// @description A button that jumps to the top once you have scrolled down.
 // @match       *
 // @run-at      document-end
 // @grant       none
 // @tag         Everywhere
 // @tag         Reading
+// @permission  Adds a button to the page
+// @featured
 // ==/UserScript==
 
 /*

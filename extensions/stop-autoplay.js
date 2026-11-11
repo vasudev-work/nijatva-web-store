@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name        Stop autoplay
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Pauses videos that start playing without your tap.
+// @match       *
+// @run-at      document-end
+// @grant       none
+// @tag         Focus
+// @permission  Pauses videos on the page
+// ==/UserScript==
+
 /*
  * Nijatva extension: stop videos that start on their own.
  *

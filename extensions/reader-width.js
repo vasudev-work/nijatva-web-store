@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name        Readable article width
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Narrows article text to a comfortable line length.
+// @match       *
+// @run-at      document-end
+// @grant       none
+// @tag         Reading
+// @permission  Changes how the page looks
+// ==/UserScript==
+
 /*
  * Nijatva extension: keep article text at a readable width.
  *

@@ -8,15 +8,17 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
 <link rel="apple-touch-icon" href="favicon-180.png">
+<link rel="canonical" href="https://vasudev-work.github.io/nijatva-web-store/">
+<meta property="og:url" content="https://vasudev-work.github.io/nijatva-web-store/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Nijatva Web Store">
 <meta property="og:title" content="Nijatva Web Store - scripts for the Nijatva and Aekant browsers">
 <meta property="og:description" content="29 extensions that make the pages you already read cleaner, quieter and faster. One tap to install.">
-<meta property="og:image" content="og.png">
+<meta property="og:image" content="https://vasudev-work.github.io/nijatva-web-store/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="og.png">
+<meta name="twitter:image" content="https://vasudev-work.github.io/nijatva-web-store/og.png">
 <style>
   :root{
     --bg:#202124; --surf:#292a2d; --surf2:#35363a; --line:#3c4043;
@@ -177,8 +179,51 @@
   .add.copy:hover{color:var(--fg);border-color:var(--brand)}
   .hintbar{background:var(--surf);border:1px solid var(--line);color:var(--fg)}
   .hintbar a{color:var(--brand);font-weight:600;text-decoration:none}
+
+  /* ---------- additions: loading, errors, skip link, permissions ---------- */
+  .sk{height:118px;margin:0 16px 14px;border-radius:24px;border:1px solid var(--line);
+      background:linear-gradient(90deg,var(--surf) 25%,var(--surf2) 50%,var(--surf) 75%);
+      background-size:200% 100%;animation:shim 1.4s linear infinite}
+  @keyframes shim{from{background-position:200% 0}to{background-position:-200% 0}}
+  .retry{margin-top:14px;padding:10px 20px;border:0;border-radius:22px;background:var(--brand);
+         color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+  .retry:active{transform:scale(.97)}
+  .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+  .skip:focus{left:12px;top:8px;width:auto;height:auto;z-index:99;background:var(--brand);
+              color:#fff;padding:8px 14px;border-radius:12px}
+  .trust.perms li{display:flex;gap:10px;align-items:flex-start;justify-content:flex-start}
+  .trust.perms .k{width:auto;text-align:center;flex:none;min-width:16px}
+  .trust.perms .v{text-align:left}
+  .perms .k.warn{color:#f29900}
+  .noscript{padding:40px 20px;text-align:center;color:var(--mut)}
+  /* wide screens: the cards flow into columns instead of one long strip */
+  @media (min-width:900px){
+    #view{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:0 16px;
+          max-width:1240px;margin:0 auto;padding:0 22px 8px}
+    #view > *{grid-column:1/-1}
+    #view > .card{grid-column:auto;margin:0 0 14px}
+    .hdr-in,.tabs{max-width:1240px;margin-left:auto;margin-right:auto}
+  }
+  .side-actions{display:flex;flex-direction:column;gap:6px;padding:4px 14px}
+  .side-row{text-align:left;background:var(--surf2);color:var(--fg);border:0;border-radius:12px;
+            padding:11px 14px;font-size:14px;cursor:pointer}
+  .side-row:hover{outline:1px solid var(--brand)}
+  .search input{font-size:16px}
+  .add{min-height:40px;align-items:center;justify-content:center;line-height:1.2}
+  .add.copy{padding:0 16px}
+  @media (max-width:440px){
+    .hdr-in{gap:6px;padding:10px}
+    .round{width:38px;height:38px}
+    .logo{width:34px;height:34px}
+    #refresh,#export{display:none}
+    .pill{width:40px;height:40px;padding:0;border-radius:50%;justify-content:center}
+    .pill .lbl{display:none}
+    .search{padding:9px 12px}
+  }
 </style></head>
 <body>
+<a class="skip" href="#view">Skip to scripts</a>
+<noscript><div class="noscript">This store needs JavaScript to list the scripts. You can read the source on <a href="https://github.com/vasudev-work/nijatva-web-store">GitHub</a>.</div></noscript>
 
 <div class="hdr">
   <div class="hdr-in">
@@ -208,7 +253,7 @@
     <button class="pill" id="local">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
            stroke-linecap="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>
-      Web
+      <span class="lbl">Web</span>
     </button>
   </div>
   <div class="tabs" role="tablist" aria-label="Store sections">
@@ -225,6 +270,11 @@
 <aside class="side" id="side" aria-hidden="true">
   <h4 id="cats-head">CATEGORIES</h4>
   <div id="cats"></div>
+  <hr>
+  <div class="side-actions">
+    <button class="side-row" onclick="refreshIndex()">Check for updates</button>
+    <button class="side-row" onclick="exportInstalled()">Export installed list</button>
+  </div>
   <hr>
   <a class="legal" id="legal-privacy" href="nijatva://settings">Privacy and security</a>
   <a class="legal" id="legal-terms" href="nijatva://settings">Nijatva Terms of Service</a>
@@ -744,6 +794,13 @@
       '<p class="s-body">' + esc(e.desc || '') + '</p>' +
 
       '<div class="sec-t">' + esc(t('whatItCan')) + '</div>' +
+      (e.permissions && e.permissions.length
+        ? '<ul class="trust perms">' + e.permissions.map(function (p) {
+            var warn = /sends|third|cookie|rewrites|pretends|intercepts/i.test(p);
+            return '<li><span class="k' + (warn ? ' warn' : '') + '" aria-hidden="true">' +
+              (warn ? '!' : '✓') + '</span><span class="v">' + esc(p) + '</span></li>';
+          }).join('') + '</ul>'
+        : '') +
       '<ul class="trust">' +
         '<li><span class="k">' + esc(t('runsOn')) + '</span><span class="v">' + esc(siteLabel(e)) +
           (everySite(e) ? '<br><span style="color:var(--mut)">' + esc(t('reachAll')) + '</span>' : '') + '</span></li>' +
@@ -837,7 +894,8 @@
   }
 
   function load() {
-    viewEl.innerHTML = '<div class="state">' + esc(t('loading')) + '</div>';
+    viewEl.innerHTML = '<div class="sk" aria-hidden="true"></div>' +
+      '<div class="sk" aria-hidden="true"></div><div class="sk" aria-hidden="true"></div>';
     var xhr = new XMLHttpRequest();
     xhr.open('GET', BASE + 'index.json?t=' + Date.now(), true);
     xhr.onload = function () {
@@ -846,10 +904,10 @@
         all = merge(d.extensions || d);
         renderCats();
         render();
-      } catch (e) { viewEl.innerHTML = '<div class="state">' + esc(t('couldNotRead')) + '</div>'; }
+      } catch (e) { viewEl.innerHTML = '<div class="state">' + esc(t('couldNotRead')) + '<br><button class="retry" data-retry="1">' + (LANG === 'hi' ? 'फिर से कोशिश करें' : 'Try again') + '</button></div>'; }
     };
     xhr.onerror = function () {
-      viewEl.innerHTML = '<div class="state">' + esc(t('couldNotReach')) + '</div>';
+      viewEl.innerHTML = '<div class="state">' + esc(t('couldNotReach')) + '<br><button class="retry" data-retry="1">' + (LANG === 'hi' ? 'फिर से कोशिश करें' : 'Try again') + '</button></div>';
     };
     xhr.send();
   }
@@ -979,6 +1037,7 @@
     if (!ev.target.closest) return;
 
     if (ev.target.closest('[data-close]')) { ev.preventDefault(); closeSheet(); return; }
+    if (ev.target.closest('[data-retry]')) { ev.preventDefault(); load(); return; }
 
     var op = ev.target.closest('[data-open]');
     if (op) { ev.preventDefault(); openById(op.getAttribute('data-open')); return; }
@@ -1054,6 +1113,17 @@
   }
   paintTheme();
   paintLang();
+
+  // the legal links open app settings inside Nijatva, and the web page everywhere else
+  (function () {
+    var inApp = /nijatva|aekant/i.test(navigator.userAgent) ||
+      !!new URLSearchParams(location.search).get('base');
+    if (inApp) return;
+    ['legal-privacy', 'legal-terms'].forEach(function (id) {
+      var a = document.getElementById(id);
+      if (a) a.setAttribute('href', 'privacy.html');
+    });
+  })();
 
   load();
 })();

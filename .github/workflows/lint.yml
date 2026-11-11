@@ -1,0 +1,30 @@
+name: lint scripts
+
+# Runs on every pull request. A script with a missing or invalid header fails
+# here, so the mistake is caught before it reaches main and the store page.
+
+on:
+  pull_request:
+    paths:
+      - "extensions/*.js"
+      - "tools/**"
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate headers
+        run: python3 tools/build_index.py --lint
+      - name: Syntax-check every script
+        run: |
+          sudo apt-get install -y -qq nodejs >/dev/null 2>&1 || true
+          for f in extensions/*.js; do
+            node --check "$f" || { echo "::error file=$f::syntax error"; exit 1; }
+          done

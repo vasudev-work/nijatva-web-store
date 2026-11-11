@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name        GitHub: full width
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Lets GitHub use the full width of the window.
+// @match       *github.com*
+// @run-at      document-start
+// @grant       none
+// @tag         Developer
+// @permission  Changes how the page looks
+// ==/UserScript==
+
 /* Nijatva extension: let GitHub use the full width of the window. */
 (function () {
   try {

@@ -1,1 +1,14 @@
-(function(){try{if(window.__nijatvaSkip)return;window.__nijatvaSkip=1;function run(){try{var b=document.querySelector('.ytp-ad-skip-button,.ytp-skip-ad-button,.ytp-ad-skip-button-modern,.ytp-ad-skip-button-container button');if(b){b.click();return;}var box=document.querySelector('#movie_player,.html5-video-player,ytm-player');if(!box)return;var c=box.querySelectorAll('button,[role=button],yt-button-renderer');for(var i=0;i<c.length;i++){var tx=(c[i].textContent||'').trim().toLowerCase();if(tx==='skip'||tx==='skip ad'||tx==='skip ads'||tx==='skip advertisement'){c[i].click();return;}}}catch(e){}}run();setInterval(run,1200);}catch(e){}})();
+// ==UserScript==
+// @name        YouTube: skip ads
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Clicks the skip button when a YouTube ad can be skipped.
+// @match       *youtube.com*
+// @run-at      document-end
+// @grant       none
+// @tag         YouTube
+// @permission  Clicks buttons on YouTube pages
+// @featured
+// ==/UserScript==
+
+(function(){try{if(window.__nijatvaSkip)return;window.__nijatvaSkip=1;function run(){try{var b=document.querySelector('.ytp-ad-skip-button,.ytp-skip-ad-button,.ytp-ad-skip-button-modern,.ytp-ad-skip-button-container button');if(b){b.click();return;}var box=document.querySelector('#movie_player,.html5-video-player,ytm-player');if(!box)return;var c=box.querySelectorAll('button,[role=button],yt-button-renderer');for(var i=0;i<c.length;i++){var tx=(c[i].textContent||'').trim().toLowerCase();if(tx==='skip'||tx==='skip ad'||tx==='skip ads'||tx==='skip advertisement'){c[i].click();return;}}}catch(e){}}run();setInterval(run,3000);}catch(e){}})();

@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name        GitHub: wide diffs
 // @namespace   in.nijatva.store
-// @version     1.0
+// @version     1.1
 // @description Lets diffs, blame and code files use the full screen width.
 // @match       *github.com*
 // @run-at      document-start
 // @grant       none
 // @tag         Developer
+// @permission  Changes how the page looks
 // ==/UserScript==
 
 /*

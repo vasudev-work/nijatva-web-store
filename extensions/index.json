@@ -1,361 +1,594 @@
 {
-  "schema": 2,
-  "version": 1,
   "extensions": [
     {
+      "icon": "icons/back-to-top.svg",
       "id": "back-to-top",
       "name": "Back to top",
-      "desc": "A small button that jumps to the top once you have scrolled down.",
+      "desc": "A button that jumps to the top once you have scrolled down.",
       "pattern": "*",
       "file": "back-to-top.js",
-      "version": "1.0",
-      "sha256": "99a4a906d64b4aa8fb14f6692ff428efc1ad948f63e418e35aef0ed5e42a5f0d",
+      "version": "1.1",
+      "sha256": "9088c88c74636de6cfc19567c39e045d466052472952309ffe35029ff71188ab",
+      "size": 2731,
       "category": "Everywhere",
-      "icon": "icons/back-to-top.svg",
-      "size": 2682,
-      "featured": true
+      "tags": [
+        "Everywhere",
+        "Reading"
+      ],
+      "permissions": [
+        "Adds a button to the page"
+      ],
+      "featured": true,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/builtin-bgplay.svg",
+      "id": "bgplay",
+      "name": "Background play",
+      "desc": "Keeps YouTube videos playing when you leave the app.",
+      "pattern": "*youtube.com*",
+      "file": "bgplay.js",
+      "version": "1.1",
+      "sha256": "bbbf6b36d6553a5d5f2bdc4a8acfd424dd86bb72bca9eaaf1efbfab2827678cf",
+      "size": 988,
+      "category": "Media",
+      "tags": [
+        "Media",
+        "Focus"
+      ],
+      "permissions": [
+        "Pretends the tab is always visible"
+      ],
+      "featured": false,
+      "run_at": "document-start"
+    },
+    {
+      "icon": "icons/block-youtube-redirect.svg",
       "id": "block-youtube-redirect",
       "name": "Block YouTube redirects",
-      "desc": "A mis-tap on a YouTube ad link does nothing",
+      "desc": "Stop ad links from throwing you into YouTube.",
       "pattern": "*",
       "file": "block-youtube-redirect.js",
-      "version": "1.0",
-      "category": "Take control of tabs",
-      "sha256": "808cbac9ff5cc35eebed4e75907f1f7511fb66c9e71f7227e532ceec624009d7",
-      "icon": "icons/block-youtube-redirect.svg",
-      "size": 8239,
-      "featured": true
+      "version": "1.1",
+      "sha256": "b87f4a6e995ad2abba3940e70d700cbdb14a02e138d04cd3d3e7720208276105",
+      "size": 8958,
+      "category": "Focus",
+      "tags": [
+        "Focus",
+        "Everywhere"
+      ],
+      "permissions": [
+        "Intercepts link clicks and pop-ups on the page"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
-      "id": "builtin-bgplay",
-      "name": "Background playback (YouTube)",
-      "desc": "Keep YouTube playing when you leave the tab",
-      "pattern": "*youtube.com*,*youtu.be*",
-      "file": "bgplay.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "07fc666954b44df7b8d74876c5fae34f9d2e3becc99c12bb02276ebab91cc9dd",
-      "icon": "icons/builtin-bgplay.svg",
-      "size": 619
-    },
-    {
-      "id": "builtin-cookie",
-      "name": "Cookie banner remover",
-      "desc": "Click the Accept button on common cookie banners",
-      "pattern": "*",
-      "file": "cookie.js",
-      "version": "1.0",
-      "category": "Privacy",
-      "sha256": "ef613fc0baeee2c06f97cf91c50b0fde27636733d3e5fc1a267fb0f9348c695a",
-      "icon": "icons/builtin-cookie.svg",
-      "size": 676
-    },
-    {
-      "id": "builtin-dark",
-      "name": "Dark mode (invert)",
-      "desc": "Invert every page for comfortable night reading",
-      "pattern": "*",
-      "file": "dark.js",
-      "version": "1.0",
-      "category": "Accessibility",
-      "sha256": "98046930f79358030ecae0539fb76c10d6cf2590c57164df766d416fe79d0980",
-      "icon": "icons/builtin-dark.svg",
-      "size": 276,
-      "featured": true
-    },
-    {
-      "id": "builtin-font",
-      "name": "Bigger text",
-      "desc": "Bump the default body text to 18px",
-      "pattern": "*",
-      "file": "font.js",
-      "version": "1.0",
-      "category": "Accessibility",
-      "sha256": "7ca401d8feac17edb61abf79b39525dd25c45bf0ed4f8dabdef4c526019507a6",
-      "icon": "icons/builtin-font.svg",
-      "size": 52
-    },
-    {
-      "id": "builtin-json",
-      "name": "JSON viewer",
-      "desc": "Pretty-print raw JSON responses",
-      "pattern": "*",
-      "file": "json.js",
-      "version": "1.0",
-      "category": "Developer Tools",
-      "sha256": "174911cefa744716cdb0dac88d57eb4d1213df58ed8fea5f012d9c2a5cac1951",
-      "icon": "icons/builtin-json.svg",
-      "size": 631
-    },
-    {
-      "id": "builtin-media",
-      "name": "Media sniffer",
-      "desc": "Detect video and audio files on the page",
-      "pattern": "*",
-      "file": "media.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "5e0f86d84eadc6892c489aac698f35cebb34f10734fc70d4c929f3e040d7a32a",
-      "icon": "icons/builtin-media.svg",
-      "size": 643
-    },
-    {
-      "id": "builtin-ryd",
-      "name": "Return YouTube Dislike",
-      "desc": "Show the dislike count again on YouTube",
-      "pattern": "*youtube.com*",
-      "file": "ryd.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "6e0711abdb5bf05213f1a1ba33950f93e2a31c1c020e5c66cab68d6c86d9f718",
-      "icon": "icons/builtin-ryd.svg",
-      "size": 935
-    },
-    {
-      "id": "builtin-target",
-      "name": "Open links in same tab",
-      "desc": "Rewrite target=\"_blank\" links to open in the same tab",
-      "pattern": "*",
-      "file": "target.js",
-      "version": "1.0",
-      "category": "Take control of tabs",
-      "sha256": "c708ba6761700ccf73d6a8979aa3f9a66f3008a32f7203c08994e8386749fc8a",
-      "icon": "icons/builtin-target.svg",
-      "size": 113
-    },
-    {
+      "icon": "icons/cat-gray.svg",
       "id": "cat-gray",
       "name": "Grayscale images",
-      "desc": "Render every image in black and white",
+      "desc": "Turns every image grey, for a calmer, less tempting page.",
       "pattern": "*",
       "file": "cat-gray.js",
-      "version": "1.0",
-      "category": "Accessibility",
-      "sha256": "b0c3371bde3a4419ab6331bfc36bdc5f93fc2731e7713495655dd19d755d1e0e",
-      "icon": "icons/cat-gray.svg",
-      "size": 145
+      "version": "1.1",
+      "sha256": "5879413871fe785e755b65650fd69072571a464f54307191a558ec8f147a5033",
+      "size": 605,
+      "category": "Focus",
+      "tags": [
+        "Focus",
+        "Accessibility"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/cat-read.svg",
       "id": "cat-read",
-      "name": "Bigger article text",
-      "desc": "Make article paragraphs larger and airier",
+      "name": "Bigger reading text",
+      "desc": "Larger paragraph text and line spacing for articles.",
       "pattern": "*",
       "file": "cat-read.js",
-      "version": "1.0",
-      "category": "Accessibility",
-      "sha256": "8017ce8da594041f59df9c639baff5e236406ce458cb9c9cb1c9e288adb171bb",
-      "icon": "icons/cat-read.svg",
-      "size": 179
+      "version": "1.1",
+      "sha256": "17fbcbf70ffbb5617c58e24ab6109ac3bf4c745af9307d594471ba0b7556176e",
+      "size": 609,
+      "category": "Reading",
+      "tags": [
+        "Reading"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/cat-sticky.svg",
       "id": "cat-sticky",
-      "name": "Unstick sticky headers",
-      "desc": "Stop headers following you down the page",
+      "name": "Unpin the header",
+      "desc": "Stops the site header from staying pinned while you scroll.",
       "pattern": "*",
       "file": "cat-sticky.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "64ab0e11b67471a653b9910939d29a176ef9e22975b8975bd33731ec337bab13",
-      "icon": "icons/cat-sticky.svg",
-      "size": 144
+      "version": "1.1",
+      "sha256": "be9ef946674fa0325328efeff8a3be26ee47a5712eb8917ebaab084d944c361d",
+      "size": 582,
+      "category": "Reading",
+      "tags": [
+        "Reading"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/cat-wiki.svg",
       "id": "cat-wiki",
-      "name": "Clean Wikipedia",
-      "desc": "Hide the sidebars on Wikipedia articles",
+      "name": "Wikipedia: clean sidebars",
+      "desc": "Hides the side columns on Wikipedia for a focused article.",
       "pattern": "*wikipedia.org*",
       "file": "cat-wiki.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "1ca2590387a102b90f44202a8cd741bdcb5bb8d49ddc403e19f2ba3a9d895c4c",
-      "icon": "icons/cat-wiki.svg",
-      "size": 184,
-      "featured": true
+      "version": "1.1",
+      "sha256": "1ebd0efd8a6e796aa11eb5a38476ed8c739ca70c2805f5f40263a6be7ea2f883",
+      "size": 633,
+      "category": "Reading",
+      "tags": [
+        "Reading"
+      ],
+      "permissions": [
+        "Hides page elements"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/cat-ytad.svg",
       "id": "cat-ytad",
-      "name": "Skip YouTube ads",
-      "desc": "Click the Skip button as soon as it appears",
+      "name": "YouTube: skip ads",
+      "desc": "Clicks the skip button when a YouTube ad can be skipped.",
       "pattern": "*youtube.com*",
       "file": "cat-ytad.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "83de4934a2f02b887d50b81f9be440b80b8d382545f5537f10b6ffc4457cf4a9",
-      "icon": "icons/cat-ytad.svg",
-      "size": 647
+      "version": "1.1",
+      "sha256": "cddbc0313feaaab89e1316bcca2fe0cc189d0693e6dc05a037fd8d89b71c4aaa",
+      "size": 1010,
+      "category": "YouTube",
+      "tags": [
+        "YouTube"
+      ],
+      "permissions": [
+        "Clicks buttons on YouTube pages"
+      ],
+      "featured": true,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/chrome-mask.svg",
       "id": "chrome-mask",
       "name": "Chrome mask",
-      "desc": "Fill in navigator.vendor, the chrome object and Client Hints so sites stop blocking the WebView",
+      "desc": "Fills in browser identity checks that some sites run.",
       "pattern": "*",
       "file": "chrome-mask.js",
       "version": "1.1",
-      "category": "Privacy",
-      "sha256": "bd70abf0be3abe884ae1e471ddb223441bc66f5549861bc667ab95797fd50738",
-      "icon": "icons/chrome-mask.svg",
-      "size": 2756,
-      "featured": true
+      "sha256": "b1d765fd540587b4eaefe88764406cfdcffe754372771c5a8dae189e595daef0",
+      "size": 3131,
+      "category": "Developer",
+      "tags": [
+        "Developer"
+      ],
+      "permissions": [
+        "Reports a Chrome-like browser identity to sites"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/builtin-cookie.svg",
+      "id": "cookie",
+      "name": "Accept cookies for me",
+      "desc": "Clicks \"accept\" on common cookie banners for you.",
+      "pattern": "*",
+      "file": "cookie.js",
+      "version": "1.1",
+      "sha256": "9cd5e89a09729543a1ef92115e18d75a8f81da9d3990329ede0ba1964b473bd9",
+      "size": 1021,
+      "category": "Focus",
+      "tags": [
+        "Focus"
+      ],
+      "permissions": [
+        "Clicks cookie-banner buttons on your behalf"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/cosmetic-cleanup.svg",
       "id": "cosmetic-cleanup",
-      "name": "Remove blank ad boxes",
-      "desc": "Delete the empty rectangles left behind after ads are blocked",
+      "name": "Remove empty ad gaps",
+      "desc": "Removes empty boxes left behind where blocked ads were.",
       "pattern": "*",
       "file": "cosmetic-cleanup.js",
-      "version": "1.0",
-      "category": "Privacy",
-      "sha256": "c8ca51c59d2075a67eb69d429010a9c3b6424af593fbeda74d79b7be370376d6",
-      "icon": "icons/cosmetic-cleanup.svg",
-      "size": 2247
+      "version": "1.1",
+      "sha256": "6535891f934d62d3dd87dca1da69b491e5225d13b028dd0217a11b39cc9dd822",
+      "size": 2833,
+      "category": "Focus",
+      "tags": [
+        "Focus",
+        "Everywhere"
+      ],
+      "permissions": [
+        "Removes empty page containers"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/dark-scrollbars.svg",
       "id": "dark-scrollbars",
       "name": "Dark scrollbars",
-      "desc": "Dark scrollbars on light pages too",
+      "desc": "Dark scrollbars, so light pages have no bright bar.",
       "pattern": "*",
       "file": "dark-scrollbars.js",
-      "version": "1.0",
+      "version": "1.1",
+      "sha256": "779330534fd46a11b5cd6adff1ef6d2f633dd6d09387ee2fee7fd90b9f876e7d",
+      "size": 841,
       "category": "Accessibility",
-      "sha256": "354f1267d465a812067c1fbd62c8a8d66369eaa50915076160fdcecfd6573730",
-      "icon": "icons/dark-scrollbars.svg",
-      "size": 507
+      "tags": [
+        "Accessibility"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/builtin-dark.svg",
+      "id": "dark",
+      "name": "Dark mode for every page",
+      "desc": "Inverts light pages to dark. Photos and videos may look odd.",
+      "pattern": "*",
+      "file": "dark.js",
+      "version": "1.1",
+      "sha256": "e03f6a218a504db033c25985c7d61997743c254137973dcc6235259b5b4d8f5d",
+      "size": 730,
+      "category": "Accessibility",
+      "tags": [
+        "Accessibility"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": true,
+      "run_at": "document-start"
+    },
+    {
+      "icon": "icons/builtin-font.svg",
+      "id": "font",
+      "name": "Bigger text",
+      "desc": "Sets the base font size to 18px on every page.",
+      "pattern": "*",
+      "file": "font.js",
+      "version": "1.1",
+      "sha256": "21445bf0e1c6ea80e192f8d1ce8f013c879f8b9fa823071e0e1ce0b933b88832",
+      "size": 488,
+      "category": "Accessibility",
+      "tags": [
+        "Accessibility",
+        "Reading"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/gh-diff-wide.svg",
       "id": "gh-diff-wide",
       "name": "GitHub: wide diffs",
       "desc": "Lets diffs, blame and code files use the full screen width.",
       "pattern": "*github.com*",
       "file": "gh-diff-wide.js",
-      "version": "1.0",
-      "sha256": "d02fc7dc9d43cdd405ae8fa193246c11a1f3ae205b38d4641d657a063de03fbd",
+      "version": "1.1",
+      "sha256": "0f975ef09463fd3bc95c1a44bdc62f73390816b3c583846c10ec43a765299f3d",
+      "size": 1780,
       "category": "Developer",
-      "icon": "icons/gh-diff-wide.svg",
-      "size": 1737
+      "tags": [
+        "Developer"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/hide-consent.svg",
       "id": "hide-consent",
       "name": "Hide cookie banners",
-      "desc": "Remove the consent overlay once it is on screen",
+      "desc": "Hides cookie banners once they have been dealt with.",
       "pattern": "*",
       "file": "hide-consent.js",
-      "version": "1.0",
-      "category": "Privacy",
-      "sha256": "590638c36aa85488a2f4ce1f6bc79e366a0e57247435120120d4e8b0881f34fa",
-      "icon": "icons/hide-consent.svg",
-      "size": 1124
+      "version": "1.1",
+      "sha256": "e9346558a8f91d4a2002042403e036f090fde9490a419e9d928303bc4ac2e836",
+      "size": 1446,
+      "category": "Focus",
+      "tags": [
+        "Focus"
+      ],
+      "permissions": [
+        "Hides page elements"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/hide-shorts.svg",
       "id": "hide-shorts",
-      "name": "Hide YouTube Shorts",
-      "desc": "Remove the Shorts shelves, phone and desktop",
+      "name": "YouTube: hide Shorts shelves",
+      "desc": "Hides the Shorts shelves on YouTube home and search.",
       "pattern": "*youtube.com*",
       "file": "hide-shorts.js",
       "version": "1.1",
-      "category": "Productivity",
-      "sha256": "8be25d594331c0c04cdc374e66e501ffdbff52b14565e5c8d0a6d36c68a720e7",
-      "icon": "icons/hide-shorts.svg",
-      "size": 2362,
-      "featured": true
+      "sha256": "7297d5e499bf4530a260dc143afab2c6010f90fcfe2150a2a1c11d5fb60f7580",
+      "size": 2729,
+      "category": "YouTube",
+      "tags": [
+        "YouTube",
+        "Focus"
+      ],
+      "permissions": [
+        "Hides page elements"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/hn-comfort.svg",
       "id": "hn-comfort",
       "name": "Hacker News: readable",
       "desc": "Bigger type, wider column and real spacing between comments.",
       "pattern": "*news.ycombinator.com*",
       "file": "hn-comfort.js",
-      "version": "1.0",
-      "sha256": "d96e881d23e16c4fe1499008285511d4e6099933b7455c64022a81d020de652b",
+      "version": "1.1",
+      "sha256": "924c9562bf75e8a0aab134e21f504f829b7a5a586709a47d3dc4edb0068ab420",
+      "size": 1982,
       "category": "Reading",
-      "icon": "icons/hn-comfort.svg",
-      "size": 1939,
-      "featured": true
+      "tags": [
+        "Reading"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/builtin-json.svg",
+      "id": "json",
+      "name": "Readable JSON",
+      "desc": "Pretty-prints JSON files you open in the browser.",
+      "pattern": "*",
+      "file": "json.js",
+      "version": "1.1",
+      "sha256": "d6a4ff2699da20ecffd2479680f4ddead7e81181df9a2a7fc66fd9d2b8edab02",
+      "size": 957,
+      "category": "Developer",
+      "tags": [
+        "Developer"
+      ],
+      "permissions": [
+        "Rewrites JSON pages you open"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/builtin-media.svg",
+      "id": "media",
+      "name": "Media finder",
+      "desc": "Finds video and audio links for the app media tools.",
+      "pattern": "*",
+      "file": "media.js",
+      "version": "1.1",
+      "sha256": "edeefdb6030a613c842400b1c7cb8aee8e4a11c9e1d7d708aa922c9674612ae6",
+      "size": 1018,
+      "category": "Media",
+      "tags": [
+        "Media"
+      ],
+      "permissions": [
+        "Reads media links on the page",
+        "Sends found links to the app only"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/no-miniplayer.svg",
       "id": "no-miniplayer",
-      "name": "No YouTube mini player",
-      "desc": "Stop the mini player following you down the page",
+      "name": "YouTube: no mini player",
+      "desc": "Stops YouTube's floating mini player following you.",
       "pattern": "*youtube.com*",
       "file": "no-miniplayer.js",
-      "version": "1.0",
-      "category": "Take control of tabs",
-      "sha256": "8340bbdc43cb691dba6cc4dcf5a6e3d000e57c4d56159df35341a7e5f9a25747",
-      "icon": "icons/no-miniplayer.svg",
-      "size": 689
+      "version": "1.1",
+      "sha256": "abbab415d5570597d27fb8ccad7205197b64fb19db65b25d50b6adc2119277e1",
+      "size": 1050,
+      "category": "YouTube",
+      "tags": [
+        "YouTube",
+        "Focus"
+      ],
+      "permissions": [
+        "Hides page elements"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/reader-width.svg",
       "id": "reader-width",
       "name": "Readable article width",
-      "desc": "Keep article text at a comfortable line length",
+      "desc": "Narrows article text to a comfortable line length.",
       "pattern": "*",
       "file": "reader-width.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "d048036ac8483f0f9870362f5a63ec8c95a900d4bc2e76e164e0735b82da3531",
-      "icon": "icons/reader-width.svg",
-      "size": 1133
+      "version": "1.1",
+      "sha256": "0e4e771648e775a841848212353a925c99eded4e9822fceb611c9e97733c42b6",
+      "size": 1465,
+      "category": "Reading",
+      "tags": [
+        "Reading"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/builtin-ryd.svg",
+      "id": "ryd",
+      "name": "YouTube: show dislikes",
+      "desc": "Shows the dislike count under YouTube videos.",
+      "pattern": "*youtube.com*",
+      "file": "ryd.js",
+      "version": "1.1",
+      "sha256": "943016b6e92ffdaa8ae07bbdeaf361b3734c03a8745cf3cb2e998701de7b54e8",
+      "size": 1298,
+      "category": "YouTube",
+      "tags": [
+        "YouTube"
+      ],
+      "permissions": [
+        "Sends each video ID to returnyoutubedislikeapi.com"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/so-wide.svg",
       "id": "so-wide",
       "name": "Stack Overflow: wide answers",
-      "desc": "Gives the question and answers the full width; code scrolls sideways.",
+      "desc": "Full-width questions and answers; code scrolls sideways.",
       "pattern": "*stackoverflow.com*,*stackexchange.com*,*superuser.com*,*serverfault.com*",
       "file": "so-wide.js",
-      "version": "1.0",
-      "sha256": "941f15f5ae31f16318f2d5aa1a80e26ec1ea419f4e764e71025f654238c09d2b",
+      "version": "1.1",
+      "sha256": "5f9055f62df61538fb19dab20e34f3b0d8dd8cff5c6edce88d51824282267b6e",
+      "size": 1918,
       "category": "Developer",
-      "icon": "icons/so-wide.svg",
-      "size": 1888
+      "tags": [
+        "Developer"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/stop-autoplay.svg",
       "id": "stop-autoplay",
-      "name": "Stop video autoplay",
-      "desc": "Pause videos that start on their own; a tap still plays them",
+      "name": "Stop autoplay",
+      "desc": "Pauses videos that start playing without your tap.",
       "pattern": "*",
       "file": "stop-autoplay.js",
-      "version": "1.0",
-      "category": "Productivity",
-      "sha256": "39ff814bd465ad390cd4872dd8c8f22918748a6b2f23d1907b08c364cd34e218",
-      "icon": "icons/stop-autoplay.svg",
-      "size": 1199
+      "version": "1.1",
+      "sha256": "d17bb4307dacee57e08f75c94e6d9d17c7cab3d2004b73df7fd1b098b42b7640",
+      "size": 1519,
+      "category": "Focus",
+      "tags": [
+        "Focus"
+      ],
+      "permissions": [
+        "Pauses videos on the page"
+      ],
+      "featured": false,
+      "run_at": "document-end"
     },
     {
+      "icon": "icons/builtin-target.svg",
+      "id": "target",
+      "name": "Open links in same tab",
+      "desc": "Stops links from opening in a new tab.",
+      "pattern": "*",
+      "file": "target.js",
+      "version": "1.1",
+      "sha256": "1ea541a581435e7c1a4325f30d747beb86504bb02b78fbcf0ed3a7077915ef49",
+      "size": 437,
+      "category": "Focus",
+      "tags": [
+        "Focus"
+      ],
+      "permissions": [
+        "Changes link targets on the page"
+      ],
+      "featured": false,
+      "run_at": "document-end"
+    },
+    {
+      "icon": "icons/wide-github.svg",
       "id": "wide-github",
-      "name": "Wide GitHub",
-      "desc": "Use the full window width on GitHub",
+      "name": "GitHub: full width",
+      "desc": "Lets GitHub use the full width of the window.",
       "pattern": "*github.com*",
       "file": "wide-github.js",
-      "version": "1.0",
-      "category": "Developer Tools",
-      "sha256": "c18c83a70fca531a8919ff6a3e2e9714b1a5c18db71579fbea66a5a613b86401",
-      "icon": "icons/wide-github.svg",
-      "size": 469
+      "version": "1.1",
+      "sha256": "c3c42993c2d632fcf09a6994e51889ecfc70d28d5110066f396bdb20061c5969",
+      "size": 807,
+      "category": "Developer",
+      "tags": [
+        "Developer"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/wiki-comfort.svg",
       "id": "wiki-comfort",
       "name": "Wikipedia: comfortable reading",
       "desc": "Roomier line height, and infoboxes that fit a phone screen.",
       "pattern": "*wikipedia.org*",
       "file": "wiki-comfort.js",
-      "version": "1.0",
-      "sha256": "65ccab45c030d7592ebb0bdcaa6bcddda4d8564c716482590276adbbf433ab16",
+      "version": "1.1",
+      "sha256": "58beaf315ed589871d973a8d2c683d6b469b7fd0bfe255b67808e94731d7e2d9",
+      "size": 1782,
       "category": "Reading",
-      "icon": "icons/wiki-comfort.svg",
-      "size": 1739
+      "tags": [
+        "Reading"
+      ],
+      "permissions": [
+        "Changes how the page looks"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     },
     {
+      "icon": "icons/yt-shorts-off.svg",
       "id": "yt-shorts-off",
       "name": "YouTube: Shorts off",
       "desc": "Removes the Shorts shelf and the Shorts tab from YouTube.",
       "pattern": "*youtube.com*",
       "file": "yt-shorts-off.js",
-      "version": "1.0",
-      "sha256": "53d5a692aeb222b951473781bcb85ab1d45d42a580c6e866252f5e1e17347f9e",
-      "category": "Youtube",
-      "icon": "icons/yt-shorts-off.svg",
-      "size": 2117
+      "version": "1.1",
+      "sha256": "a5ca514bb8da5ab1a6b19ba2083ff74ddaa3d14c44114ed614309c22ed710920",
+      "size": 2350,
+      "category": "YouTube",
+      "tags": [
+        "YouTube",
+        "Focus"
+      ],
+      "permissions": [
+        "Hides page elements"
+      ],
+      "featured": false,
+      "run_at": "document-start"
     }
   ]
 }

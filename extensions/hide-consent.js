@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name        Hide cookie banners
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Hides cookie banners once they have been dealt with.
+// @match       *
+// @run-at      document-end
+// @grant       none
+// @tag         Focus
+// @permission  Hides page elements
+// ==/UserScript==
+
 /*
  * Nijatva extension: hide the cookie banner after it has been dealt with.
  *

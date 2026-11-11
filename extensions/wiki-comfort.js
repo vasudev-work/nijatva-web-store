@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name        Wikipedia: comfortable reading
 // @namespace   in.nijatva.store
-// @version     1.0
+// @version     1.1
 // @description Roomier line height, and infoboxes that fit a phone screen.
 // @match       *wikipedia.org*
 // @run-at      document-start
 // @grant       none
 // @tag         Reading
+// @permission  Changes how the page looks
 // ==/UserScript==
 
 /*

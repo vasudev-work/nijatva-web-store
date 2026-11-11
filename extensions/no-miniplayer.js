@@ -1,3 +1,16 @@
+// ==UserScript==
+// @name        YouTube: no mini player
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Stops YouTube's floating mini player following you.
+// @match       *youtube.com*
+// @run-at      document-end
+// @grant       none
+// @tag         YouTube
+// @tag         Focus
+// @permission  Hides page elements
+// ==/UserScript==
+
 /* Nijatva extension: stop YouTube's mini player following you down the page. */
 (function () {
   try {

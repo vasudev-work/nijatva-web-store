@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name        Hacker News: readable
 // @namespace   in.nijatva.store
-// @version     1.0
+// @version     1.1
 // @description Bigger type, wider column and real spacing between comments.
 // @match       *news.ycombinator.com*
 // @run-at      document-start
 // @grant       none
 // @tag         Reading
+// @permission  Changes how the page looks
 // ==/UserScript==
 
 /*

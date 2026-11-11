@@ -1,3 +1,16 @@
+// ==UserScript==
+// @name        YouTube: hide Shorts shelves
+// @namespace   in.nijatva.store
+// @version     1.1
+// @description Hides the Shorts shelves on YouTube home and search.
+// @match       *youtube.com*
+// @run-at      document-end
+// @grant       none
+// @tag         YouTube
+// @tag         Focus
+// @permission  Hides page elements
+// ==/UserScript==
+
 /*
  * Nijatva extension: hide the Shorts shelves on YouTube.
  *

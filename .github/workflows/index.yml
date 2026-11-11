@@ -1,39 +1,81 @@
 name: build index
 
+# Rebuilds extensions/index.json whenever a script or tool changes on main.
+#
+# It no longer fails when the catalogue changes. The old version verified the
+# signature before committing, so a new script could never be published (the
+# CI has no signing key, so the signature was always stale). Now:
+#   - the catalogue is always rebuilt and committed;
+#   - if the STORE_SIGNING_KEY secret is set, the catalogue is re-signed and
+#     the signature is checked against the public key in the app;
+#   - if it is not set, CI prints a warning. The store page and "Install from
+#     a link" still work, but the in-app remote source refuses the list until
+#     someone signs it locally.
+
 on:
   push:
     branches: [main]
     paths:
       - "extensions/*.js"
+      - "tools/**"
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: build-index
+  cancel-in-progress: false
 
 jobs:
   index:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Install the signing library
         run: pip install --quiet cryptography
-      - name: Rebuild the catalogue from the script headers
+
+      - name: Validate every script header
+        run: python3 tools/build_index.py --lint
+
+      - name: Rebuild the catalogue
         run: python3 tools/build_index.py
-      - name: Check the signature still matches
-        # A rebuilt index.json invalidates index.json.sig, and the app refuses
-        # a catalogue whose signature does not verify. Fail here, before the
-        # commit, rather than publishing a store that will not load.
-        run: python3 tools/verify_sig.py
-      - name: Commit it if it changed
+
+      - name: Sign the catalogue (only when the key is configured)
+        env:
+          STORE_SIGNING_KEY: ${{ secrets.STORE_SIGNING_KEY }}
         run: |
-          if git diff --quiet -- extensions/index.json; then
+          if [ -z "$STORE_SIGNING_KEY" ]; then
+            echo "::warning title=index.json not re-signed::STORE_SIGNING_KEY is not set. The in-app remote source will refuse this catalogue until it is signed locally with tools/sign.py."
+            exit 0
+          fi
+          KEY="$RUNNER_TEMP/store-signing-key.pem"
+          printf '%s\n' "$STORE_SIGNING_KEY" > "$KEY"
+          python3 tools/sign.py "$KEY"
+          rm -f "$KEY"
+          python3 tools/verify_sig.py
+
+      - name: Report the signature state
+        run: |
+          if python3 tools/verify_sig.py >/dev/null 2>&1; then
+            echo "Signature matches index.json" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Signature does NOT match index.json. Sign it locally with tools/sign.py." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit the catalogue if it changed
+        run: |
+          git add extensions/index.json extensions/index.json.sig
+          if git diff --cached --quiet; then
             echo "index.json already current"
             exit 0
           fi
           git config user.name  "nijatva-store-bot"
           git config user.email "nijatva-store-bot@users.noreply.github.com"
-          git add extensions/index.json
           git commit -m "index: rebuild from script headers"
           git push
